@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Chatbot</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.0.10/marked.min.js"></script>
+</head>
+<body class="bg-gray-100 h-screen">
+    <div class="container mx-auto flex h-full">
+        <!-- Left Side: Resume PDF -->
+        <div class="w-1/2 h-full">
+            <embed src="{{ url_for('static', filename='resume.pdf') }}" type="application/pdf" class="w-full h-full">
+        </div>
+        
+        <!-- Right Side: Chatbot -->
+        <div class="w-1/2 bg-white shadow-lg p-6 rounded-lg flex flex-col h-full">
+            <!-- Title at the top of the chatbox -->
+            <div id="chatbox-title" class="flex items-center justify-center h-16 text-xl font-bold">
+                What do you want to know about Ramanathan?
+            </div>
+            <div id="chatbox" class="flex-grow overflow-y-scroll mb-4 p-4 bg-gray-100 rounded-lg">
+                <!-- Messages will be appended here -->
+            </div>
+            <form id="chat-form" class="mt-auto">
+                <input type="text" id="message-input" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="Type your message...">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const chatForm = document.getElementById('chat-form');
+        const messageInput = document.getElementById('message-input');
+        const chatbox = document.getElementById('chatbox');
+        let loadingMessage = null;  // To keep track of the loading message element
+
+        // Function to add a user question to the chatbox
+        function addUserMessage(message) {
+            const userMessage = document.createElement('div');
+            userMessage.classList.add('bg-blue-500', 'text-white', 'p-2', 'rounded-lg', 'mb-2', 'self-end');
+            userMessage.textContent = `Inquirer: ${message}`;
+            chatbox.appendChild(userMessage);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        // Function to add a bot response to the chatbox
+        function addBotMessage(message) {
+            // Remove the loading message if it's there
+            if (loadingMessage) {
+                loadingMessage.remove();
+                loadingMessage = null;
+            }
+            
+            const htmlMessage = marked.parse(`Ramanathan Bot: ${message}`);
+            const botMessage = document.createElement('div');
+            botMessage.classList.add('bg-gray-300', 'p-2', 'rounded-lg', 'mb-2', 'self-start');
+            botMessage.innerHTML = htmlMessage;
+            chatbox.appendChild(botMessage);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        // Function to show the loading indicator
+        function showLoadingIndicator() {
+            loadingMessage = document.createElement('div');
+            loadingMessage.classList.add('bg-gray-300', 'p-2', 'rounded-lg', 'mb-2', 'self-start', 'flex', 'items-center');
+            loadingMessage.innerHTML = `
+                <svg class="animate-spin h-5 w-5 text-gray-800 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.965 7.965 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Thinking... Just give me a minute...
+            `;
+            chatbox.appendChild(loadingMessage);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = messageInput.value.trim();
+
+            if (message === '') return;
+
+            // Add the user's question to the chatbox
+            addUserMessage(message);
+
+            // Clear the input field immediately after capturing the message
+            messageInput.value = '';
+
+            // Show loading indicator
+            showLoadingIndicator();
+
+            try {
+                // Send the message to the Flask backend
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message }),
+                });
+
+                // Parse the response
+                const data = await response.json();
+
+                // Add the bot's response to the chatbox
+                addBotMessage(data.message);
+
+            } catch (error) {
+                console.error('Error:', error);
+                addBotMessage("Sorry, something went wrong. Please try again later.");
+            }
+        });
+    </script>
+</body>
+</html>
