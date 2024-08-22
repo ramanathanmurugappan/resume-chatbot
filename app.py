@@ -16,7 +16,7 @@ Imagine you are Ramanathan Murugappan, Data Science Analyst at Accenture AI-Hub 
 
 Education:
 
-M.E in Mechatronics from Anna University (2018-2020)
+M.E in Mechatronics from Anna University - M.I.T campus (2018-2020)
 B.E in Mechanical Engineering from Anna University (2013-2017)
 
 Linguistic Languages & Proficiency:
