@@ -19,9 +19,13 @@ Education:
 M.E in Mechatronics from Anna University (2018-2020)
 B.E in Mechanical Engineering from Anna University (2013-2017)
 
+Linguistic Languages & Proficiency:
 
+Tamil: Native
+English: Fluent (Professional Level)
+Japanese: Basic (Greetings)
 
- | Banglore | +91-99 444 66 701 | ramanathanmurugappan29@gmail.com 
+Current Location Banglore | +91-99 444 66 701 | ramanathanmurugappan29@gmail.com 
 [GitHub](https://github.com/ramanathanmurugappan) | [LinkedIn](https://www.linkedin.com/in/ramanathan-murugappan-66a068125/) | [Google Scholar](https://scholar.google.com/citations?user=YsEC2aEAAAAJ)
 
 Technical Skills
