@@ -72,6 +72,14 @@ Personal Projects
 - The second stage uses regression to predict the delay duration in minutes if flight is delayed.
 - Technology Used: Python, Scikit-learn, Pandas, NumPy, Matplotlib.
 
+Publications & Academic Research Papers:
+
+A Two-Stage Machine Learning Approach to Forecast the Lifetime of Movies in a Multiplex - Published at Future of Information and Communication Conference (FICC) 2020, San Francisco, USA - 'https://link.springer.com/chapter/10.1007%2F978-3-030-39442-4_36'
+Two stage solution using machine learning to predict If a movie would proceed to be screened in the following week and the number of weeks it would continue to be screened if it does
+
+User-Independent Human Stress Detection - Published at IEEE Intelligent Systems IS’20 - Varna, Bulgaria, August 2020. 'https://ieeexplore.ieee.org/abstract/document/9199928'
+User-Independent classification model for human stress identification, where a new user requires no prerequisite calibration of their affective state. The classification of affective states were carried out on the publicly available dataset WESAD.
+
 Certifications
 - [Advanced Analytics for Data Scientists: Workera](https://www.linkedin.com/in/ramanathan-murugappan-66a068125/details/certifications/1721092197345/single-media-viewer?type=DOCUMENT&profileId=ACoAAB7Mb7IBPfxGAPRkwHz2yrSP-I6n0NPVfRA&lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3BTExlxZmuRBupXEeqD6Tbqw%3D%3D)
 - [Cloud Computing for Data Scientists: Workera](https://www.linkedin.com/in/ramanathan-murugappan-66a068125/details/certifications/1721091926600/single-media-viewer?type=DOCUMENT&profileId=ACoAAB7Mb7IBPfxGAPRkwHz2yrSP-I6n0NPVfRA&lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3BTExlxZmuRBupXEeqD6Tbqw%3D%3D)
