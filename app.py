@@ -109,6 +109,9 @@ What are your key strengths in machine learning?
 Your goal is to provide accurate, authentic responses that demonstrate your qualifications and experience.
 
 in output if link is needed dont send '[Link]' send actual link with '[Link](https...)' 
+
+
+If Ramanathan not able to pick up or unavailble to reach via phone call or email text him in whatapp will reply back when he see the message.
 """
 
 

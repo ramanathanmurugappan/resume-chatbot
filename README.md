@@ -1,3 +1,4 @@
+
 # Resume Chatbot
 
 ## Overview
@@ -10,7 +11,7 @@ This project is containerized using Docker for easy deployment and scalability.
 
 - **Interactive Resume Building**: Chatbot interface to guide users through resume creation.
 - **Generative AI Integration**: Utilizes Google's Generative AI for content generation and recommendations.
-- **Dockerized Deployment**: Easily deployable using Docker, suitable for cloud environments like Vercel.
+- **Dockerized Deployment**: Easily deployable using Docker, suitable for cloud environments like Render.com.
 
 ## How the App Looks
 
@@ -27,13 +28,12 @@ Below is a screenshot of the Resume Chatbot in action. The interface is designed
 - **Flask**: Python web framework used for building the web application.
 - **Google Generative AI**: API used for AI-driven content generation.
 - **Docker**: Containerization tool for easy deployment.
-- **Vercel**: (Optional) Hosting platform used for deploying the application.
+- **Render.com**: Hosting platform used for deploying the application.
 
 ## Prerequisites
 
 - **Python 3.9+**
 - **Docker**
-- **Vercel CLI** (if deploying on Vercel)
 
 ## Setup Instructions
 
@@ -55,22 +55,17 @@ docker run -d -p 5001:5001 -e API_KEY="your-google-generative-ai-api-key" resume
 
 This will start the Flask app and make it accessible at `http://localhost:5001`.
 
-### 3. Deploy to Vercel
+### 3. Deploy to Render.com
 
-If you wish to deploy the application to Vercel:
+If you wish to deploy the application to Render.com:
 
-- Ensure you have the Vercel CLI installed.
-- Set up your environment variables in Vercel's dashboard.
-- Run the following commands:
-
-```bash
-vercel
-vercel --prod
-```
+- Create an account and set up your project on Render.com.
+- Add your environment variables in the Render.com dashboard.
+- Connect your GitHub repository to Render.com and deploy.
 
 ### 4. Access the Application
 
-Once the Docker container is running, you can access the application at `http://localhost:5001`. If deployed on Vercel, use the provided URL from the Vercel dashboard.
+Once the Docker container is running, you can access the application at `http://localhost:5001`. If deployed on Render.com, use the provided URL from the Render.com dashboard.
 
 ## Project Structure
 
@@ -80,7 +75,7 @@ resume-chatbot/
 ├── app.py                 # Main Flask application
 ├── Dockerfile             # Dockerfile for building the Docker image
 ├── requirements.txt       # Python dependencies
-├── vercel.json            # Configuration for deploying on Vercel
+├── render.yaml            # Configuration for deploying on Render.com
 ├── templates/
 │   └── index.html         # HTML templates for Flask
 ├── images/
@@ -91,7 +86,3 @@ resume-chatbot/
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
