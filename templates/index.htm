@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -44,14 +45,32 @@ body {
 .resume-panel {
   flex: 1;
   overflow-y: auto;
-  background: rgba(250, 246, 239, 0.86);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: #ffffff;
   padding: 44px 52px 60px;
   font-family: 'Lora', serif;
 }
 .resume-panel::-webkit-scrollbar { width: 4px; }
 .resume-panel::-webkit-scrollbar-thumb { background: #d6ccc0; border-radius: 2px; }
+
+.download-bar {
+  position: sticky; top: -44px; z-index: 10;
+  display: flex; justify-content: flex-end;
+  background: #ffffff;
+  margin: -44px -52px 20px;
+  padding: 10px 52px 10px;
+  border-bottom: 1px solid #f0ede8;
+}
+.download-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--wa-dark); color: #fff;
+  border: none; cursor: pointer;
+  font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 500;
+  padding: 7px 14px; border-radius: 6px;
+  transition: background 0.15s;
+}
+.download-btn:hover { background: var(--wa-mid); }
+.download-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+.download-btn svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
 
 .r-name    { font-size: 26px; font-weight: 600; color: #1a1a1a; letter-spacing: -0.02em; }
 .r-role    { font-size: 13px; font-style: italic; color: #888; margin-top: 3px; }
@@ -182,15 +201,15 @@ body {
 #sel-ask-btn:hover { background: rgba(255,255,255,0.1); }
 #sel-ask-btn svg { width: 14px; height: 14px; fill: var(--wa-green); flex-shrink: 0; }
 
-/* Chat messages area — actual WA tile pattern */
+/* Chat messages area — WA-style inline SVG pattern */
 .chat-msgs {
   flex: 1; overflow-y: auto;
   padding: 10px 8px; display: flex; flex-direction: column; gap: 3px;
   scroll-behavior: smooth;
-  background-color: #EAE0D3;
-  background-image: linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.55)), url('/static/wa-bg-tile.png');
+  background-color: #ede9e0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cg transform='translate(35,30) rotate(-10)'%3E%3Crect x='-18' y='-12' width='36' height='24' rx='5' fill='none' stroke='%23ccc8bf' stroke-width='1.5'/%3E%3Cline x1='-10' y1='-4' x2='10' y2='-4' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Cline x1='-10' y1='3' x2='6' y2='3' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Cpath d='M-8,12 L-14,20 L-2,12' fill='none' stroke='%23ccc8bf' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/g%3E%3Cg transform='translate(85,18)'%3E%3Cline x1='0' y1='-7' x2='0' y2='7' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3Cline x1='-7' y1='0' x2='7' y2='0' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3Cline x1='-4.5' y1='-4.5' x2='4.5' y2='4.5' stroke='%23ccc8bf' stroke-width='0.8'/%3E%3Cline x1='4.5' y1='-4.5' x2='-4.5' y2='4.5' stroke='%23ccc8bf' stroke-width='0.8'/%3E%3C/g%3E%3Cg transform='translate(135,38) rotate(12)'%3E%3Crect x='-8' y='-14' width='16' height='28' rx='3' fill='none' stroke='%23ccc8bf' stroke-width='1.4'/%3E%3Crect x='-6' y='-11' width='12' height='16' rx='1' fill='none' stroke='%23ccc8bf' stroke-width='0.8'/%3E%3Ccircle cx='0' cy='10' r='2' fill='none' stroke='%23ccc8bf' stroke-width='0.8'/%3E%3C/g%3E%3Cg transform='translate(190,28) rotate(-8)'%3E%3Cpath d='M0,7 C-14,-2 -14,-14 0,-8 C14,-14 14,-2 0,7Z' fill='none' stroke='%23ccc8bf' stroke-width='1.4'/%3E%3C/g%3E%3Ccircle cx='65' cy='55' r='2' fill='%23ccc8bf'/%3E%3Ccircle cx='115' cy='45' r='1.5' fill='%23ccc8bf'/%3E%3Ccircle cx='160' cy='65' r='2' fill='%23ccc8bf'/%3E%3Ccircle cx='220' cy='50' r='1.5' fill='%23ccc8bf'/%3E%3Cg transform='translate(50,105) rotate(-6)'%3E%3Crect x='-14' y='-9' width='28' height='20' rx='3' fill='none' stroke='%23ccc8bf' stroke-width='1.4'/%3E%3Ccircle cx='0' cy='1' r='7' fill='none' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3Ccircle cx='0' cy='1' r='3.5' fill='none' stroke='%23ccc8bf' stroke-width='0.8'/%3E%3Crect x='-4' y='-12' width='8' height='4' rx='1' fill='none' stroke='%23ccc8bf' stroke-width='1'/%3E%3C/g%3E%3Cg transform='translate(115,90)'%3E%3Ccircle cx='0' cy='0' r='12' fill='none' stroke='%23ccc8bf' stroke-width='1.4'/%3E%3Ccircle cx='-4' cy='-4' r='1.8' fill='%23ccc8bf'/%3E%3Ccircle cx='4' cy='-4' r='1.8' fill='%23ccc8bf'/%3E%3Cpath d='M-6,3 Q0,10 6,3' fill='none' stroke='%23ccc8bf' stroke-width='1.3'/%3E%3C/g%3E%3Cg transform='translate(175,100) rotate(8)'%3E%3Cellipse cx='-6' cy='10' rx='5' ry='3.5' fill='none' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3Cellipse cx='8' cy='6' rx='5' ry='3.5' fill='none' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3Cline x1='-1' y1='10' x2='-1' y2='-6' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3Cline x1='13' y1='6' x2='13' y2='-10' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3Cline x1='-1' y1='-6' x2='13' y2='-10' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='translate(215,115) rotate(-5)'%3E%3Crect x='-14' y='-9' width='28' height='18' rx='2' fill='none' stroke='%23ccc8bf' stroke-width='1.4'/%3E%3Cpath d='M-14,-9 L0,3 L14,-9' fill='none' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3C/g%3E%3Ccircle cx='85' cy='130' r='1.5' fill='%23ccc8bf'/%3E%3Ccircle cx='155' cy='140' r='2' fill='%23ccc8bf'/%3E%3Ccircle cx='30' cy='165' r='2' fill='%23ccc8bf'/%3E%3Ccircle cx='200' cy='155' r='1.5' fill='%23ccc8bf'/%3E%3Cg transform='translate(35,178) rotate(-5)'%3E%3Cpath d='M0,14 Q-11,4 -11,-4 A11,11 0 1,1 11,-4 Q11,4 0,14Z' fill='none' stroke='%23ccc8bf' stroke-width='1.4'/%3E%3Ccircle cx='0' cy='-4' r='4.5' fill='none' stroke='%23ccc8bf' stroke-width='1'/%3E%3C/g%3E%3Cg transform='translate(90,168) rotate(5)'%3E%3Cpath d='M4,-12 L-5,1 L3,1 L-4,12 L7,-2 L-1,-2Z' fill='none' stroke='%23ccc8bf' stroke-width='1.3' stroke-linejoin='round'/%3E%3C/g%3E%3Cg transform='translate(130,155)'%3E%3Cline x1='0' y1='-5' x2='0' y2='5' stroke='%23ccc8bf' stroke-width='1'/%3E%3Cline x1='-5' y1='0' x2='5' y2='0' stroke='%23ccc8bf' stroke-width='1'/%3E%3Cline x1='-3' y1='-3' x2='3' y2='3' stroke='%23ccc8bf' stroke-width='0.7'/%3E%3Cline x1='3' y1='-3' x2='-3' y2='3' stroke='%23ccc8bf' stroke-width='0.7'/%3E%3C/g%3E%3Cg transform='translate(185,172) rotate(8)'%3E%3Crect x='-14' y='-9' width='28' height='18' rx='4' fill='none' stroke='%23ccc8bf' stroke-width='1.3'/%3E%3Cline x1='-8' y1='-3' x2='8' y2='-3' stroke='%23ccc8bf' stroke-width='1'/%3E%3Cline x1='-8' y1='3' x2='4' y2='3' stroke='%23ccc8bf' stroke-width='1'/%3E%3Cpath d='M6,9 L10,16 L14,9' fill='none' stroke='%23ccc8bf' stroke-width='1.3' stroke-linejoin='round'/%3E%3C/g%3E%3Cg transform='translate(65,210) rotate(5)'%3E%3Cpath d='M0,5 C-9,-2 -9,-10 0,-6 C9,-10 9,-2 0,5Z' fill='none' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='translate(120,210) rotate(-6)'%3E%3Crect x='-5' y='-12' width='10' height='16' rx='5' fill='none' stroke='%23ccc8bf' stroke-width='1.3'/%3E%3Cpath d='M-8,3 Q-8,12 0,12 Q8,12 8,3' fill='none' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3Cline x1='0' y1='12' x2='0' y2='17' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='translate(175,215)'%3E%3Cline x1='0' y1='-6' x2='0' y2='6' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Cline x1='-6' y1='0' x2='6' y2='0' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Cline x1='-4' y1='-4' x2='4' y2='4' stroke='%23ccc8bf' stroke-width='0.7'/%3E%3Cline x1='4' y1='-4' x2='-4' y2='4' stroke='%23ccc8bf' stroke-width='0.7'/%3E%3C/g%3E%3Ccircle cx='145' cy='228' r='1.5' fill='%23ccc8bf'/%3E%3Ccircle cx='220' cy='200' r='2' fill='%23ccc8bf'/%3E%3Cg transform='translate(78,68)'%3E%3Cpath d='M-8,-2 Q-8,-14 0,-14 Q8,-14 8,-2' fill='none' stroke='%23ccc8bf' stroke-width='1.3'/%3E%3Crect x='-11' y='-2' width='6' height='9' rx='2' fill='none' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3Crect x='5' y='-2' width='6' height='9' rx='2' fill='none' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='translate(210,82) rotate(-10)'%3E%3Cpath d='M-4,8 L-4,0 Q-2,-8 4,-9 L8,-3 L6,7 L-1,8Z' fill='none' stroke='%23ccc8bf' stroke-width='1.3' stroke-linejoin='round'/%3E%3Crect x='-8' y='6' width='10' height='6' rx='2' fill='none' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3C/g%3E%3Cg transform='translate(158,190)'%3E%3Cpath d='M0,-10 Q-9,-8 -9,0 L-9,6 L9,6 Q9,-8 0,-10Z' fill='none' stroke='%23ccc8bf' stroke-width='1.3'/%3E%3Cpath d='M-3,6 Q-3,10 0,10 Q3,10 3,6' fill='none' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Cline x1='0' y1='-12' x2='0' y2='-10' stroke='%23ccc8bf' stroke-width='1.5' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate(225,160)'%3E%3Cpath d='M-12,5 Q-14,-3 -7,-7 Q-4,-13 4,-10 Q10,-14 14,-6 Q18,-2 12,5Z' fill='none' stroke='%23ccc8bf' stroke-width='1.3'/%3E%3C/g%3E%3Cg transform='translate(10,90) rotate(-12)'%3E%3Cellipse cx='0' cy='8' rx='7' ry='9' fill='none' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3Cline x1='0' y1='-1' x2='0' y2='-18' stroke='%23ccc8bf' stroke-width='2.5' stroke-linecap='round'/%3E%3Ccircle cx='0' cy='8' r='2.5' fill='none' stroke='%23ccc8bf' stroke-width='0.8'/%3E%3Crect x='-4' y='-22' width='8' height='5' rx='1' fill='none' stroke='%23ccc8bf' stroke-width='1'/%3E%3C/g%3E%3Cg transform='translate(10,148)'%3E%3Ccircle cx='0' cy='0' r='10' fill='none' stroke='%23ccc8bf' stroke-width='1.3'/%3E%3Cline x1='0' y1='0' x2='0' y2='-6' stroke='%23ccc8bf' stroke-width='1.3'/%3E%3Cline x1='0' y1='0' x2='5' y2='2' stroke='%23ccc8bf' stroke-width='1.3'/%3E%3C/g%3E%3Cg transform='translate(100,142)'%3E%3Ccircle cx='0' cy='0' r='9' fill='none' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3Cpath d='M-3,-5 L7,0 L-3,5Z' fill='none' stroke='%23ccc8bf' stroke-width='1.1' stroke-linejoin='round'/%3E%3C/g%3E%3Cg transform='translate(152,16)'%3E%3Cpath d='M-7,-3 Q-9,0 -7,4' fill='none' stroke='%23ccc8bf' stroke-width='1.2' stroke-linecap='round'/%3E%3Cpath d='M-2,-3 Q-4,0 -2,4' fill='none' stroke='%23ccc8bf' stroke-width='1.2' stroke-linecap='round'/%3E%3Cpath d='M5,-3 Q3,0 5,4' fill='none' stroke='%23ccc8bf' stroke-width='1.2' stroke-linecap='round'/%3E%3Cpath d='M10,-3 Q8,0 10,4' fill='none' stroke='%23ccc8bf' stroke-width='1.2' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate(230,92) rotate(30)'%3E%3Ccircle cx='0' cy='-5' r='7' fill='none' stroke='%23ccc8bf' stroke-width='1.3'/%3E%3Cline x1='5' y1='0' x2='10' y2='8' stroke='%23ccc8bf' stroke-width='2' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate(50,145)'%3E%3Ccircle cx='-10' cy='5' r='7' fill='none' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3Ccircle cx='10' cy='5' r='7' fill='none' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3Cline x1='-10' y1='5' x2='0' y2='-5' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Cline x1='0' y1='-5' x2='10' y2='5' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Cline x1='-3' y1='-5' x2='3' y2='-5' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Cline x1='0' y1='-5' x2='0' y2='-12' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3C/g%3E%3Cg transform='translate(200,128)'%3E%3Cpath d='M-7,-10 L-9,-4 Q-9,8 0,10 Q9,8 9,-4 L7,-10Z' fill='none' stroke='%23ccc8bf' stroke-width='1.3'/%3E%3Cline x1='0' y1='10' x2='0' y2='14' stroke='%23ccc8bf' stroke-width='1.2'/%3E%3Cline x1='-6' y1='14' x2='6' y2='14' stroke='%23ccc8bf' stroke-width='1.3'/%3E%3Cpath d='M-9,-4 Q-14,-2 -12,3 Q-10,6 -7,4' fill='none' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Cpath d='M9,-4 Q14,-2 12,3 Q10,6 7,4' fill='none' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3C/g%3E%3Cg transform='translate(170,50)'%3E%3Cpath d='M-8,-7 L-6,10 L6,10 L8,-7Z' fill='none' stroke='%23ccc8bf' stroke-width='1.3' stroke-linejoin='round'/%3E%3Cline x1='-8' y1='-7' x2='8' y2='-7' stroke='%23ccc8bf' stroke-width='1.3'/%3E%3Cpath d='M8,-1 Q14,-1 12,5 Q10,8 6,6' fill='none' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Cpath d='M-3,-9 Q-2,-13 -1,-9' fill='none' stroke='%23ccc8bf' stroke-width='1'/%3E%3Cpath d='M2,-9 Q3,-13 4,-9' fill='none' stroke='%23ccc8bf' stroke-width='1'/%3E%3C/g%3E%3Cg transform='translate(234,28)'%3E%3Cpath d='M0,-8 L2,-3 L8,-3 L3,1 L5,7 L0,4 L-5,7 L-3,1 L-8,-3 L-2,-3Z' fill='none' stroke='%23ccc8bf' stroke-width='1.2' stroke-linejoin='round'/%3E%3C/g%3E%3Cg transform='translate(95,50)'%3E%3Cpath d='M0,-8 L8,0 L0,8 L-8,0Z' fill='none' stroke='%23ccc8bf' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cline x1='-8' y1='0' x2='8' y2='0' stroke='%23ccc8bf' stroke-width='0.8'/%3E%3C/g%3E%3Cg transform='translate(50,58)'%3E%3Crect x='-8' y='-10' width='16' height='20' rx='3' fill='none' stroke='%23ccc8bf' stroke-width='1.3'/%3E%3Cpath d='M-4,-10 Q-4,-15 4,-15 L4,-10' fill='none' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Cline x1='-8' y1='-2' x2='8' y2='-2' stroke='%23ccc8bf' stroke-width='1'/%3E%3Crect x='-4' y='1' width='8' height='6' rx='1' fill='none' stroke='%23ccc8bf' stroke-width='0.9'/%3E%3C/g%3E%3Cg transform='translate(170,228) rotate(20)'%3E%3Ccircle cx='0' cy='-5' r='3' fill='none' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Ccircle cx='4.8' cy='1.5' r='3' fill='none' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Ccircle cx='3' cy='7' r='3' fill='none' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Ccircle cx='-3' cy='7' r='3' fill='none' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Ccircle cx='-4.8' cy='1.5' r='3' fill='none' stroke='%23ccc8bf' stroke-width='1.1'/%3E%3Ccircle cx='0' cy='2' r='2' fill='none' stroke='%23ccc8bf' stroke-width='1'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 140px 140px;
   background-repeat: repeat;
-  background-size: auto, 275px auto;
 }
 .chat-msgs::-webkit-scrollbar { width: 3px; }
 .chat-msgs::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 2px; }
@@ -307,6 +326,13 @@ body {
 
   <!-- ════════ LEFT: RESUME ════════ -->
   <div class="resume-panel" id="resume">
+
+    <div class="download-bar">
+      <button class="download-btn" id="download-pdf-btn">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M13 8V2H7v6H3l7 7 7-7h-4zM3 18h14v2H3v-2z"/></svg>
+        Download PDF
+      </button>
+    </div>
 
     <div class="r-name">Ramanathan Murugappan</div>
     <div class="r-role">AI/ML Lead Research Engineer · Bengaluru, India</div>
@@ -841,6 +867,27 @@ body {
       else if (fn === drawCross)    drawCross(x, y, r * 0.6, col);
     }
   })();
+
+  // ── Download PDF ──────────────────────────────────────────────
+  document.getElementById('download-pdf-btn').addEventListener('click', function () {
+    const btn = this;
+    const bar = document.querySelector('.download-bar');
+    btn.disabled = true;
+    btn.innerHTML = '<svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 14a6 6 0 110-12 6 6 0 010 12z"/></svg> Generating…';
+    bar.style.visibility = 'hidden';
+
+    html2pdf().set({
+      margin: [12, 12],
+      filename: 'Ramanathan_Murugappan_Resume.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }).from(document.getElementById('resume')).save().then(() => {
+      bar.style.visibility = '';
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 20 20" fill="currentColor"><path d="M13 8V2H7v6H3l7 7 7-7h-4zM3 18h14v2H3v-2z"/></svg> Download PDF';
+    });
+  });
 </script>
 </body>
 </html>
