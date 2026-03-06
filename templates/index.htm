@@ -1,116 +1,717 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Chatbot</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/marked@4.0.10/marked.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ramanathan Murugappan — Resume Chatbot</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --wa-dark:   #075E54;
+  --wa-mid:    #128C7E;
+  --wa-green:  #25D366;
+  --wa-sent:   #DCF8C6;
+  --wa-bg:     #E5DDD5;
+  --wa-recv:   #ffffff;
+}
+
+html, body { height: 100%; font-family: 'DM Sans', sans-serif; overflow: hidden; }
+
+.layout { display: flex; height: 100vh; }
+
+/* ════════════════════════════
+   LEFT — RESUME
+════════════════════════════ */
+.resume-panel {
+  flex: 1;
+  overflow-y: auto;
+  background: #faf6ef;
+  padding: 44px 52px 60px;
+  font-family: 'Lora', serif;
+}
+.resume-panel::-webkit-scrollbar { width: 4px; }
+.resume-panel::-webkit-scrollbar-thumb { background: #d6ccc0; border-radius: 2px; }
+
+.r-name    { font-size: 26px; font-weight: 600; color: #1a1a1a; letter-spacing: -0.02em; }
+.r-role    { font-size: 13px; font-style: italic; color: #888; margin-top: 3px; }
+.r-contact { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #aaa; margin-top: 6px; line-height: 1.8; }
+.r-contact a { color: #aaa; text-decoration: none; }
+.r-contact a:hover { color: var(--wa-mid); }
+
+.r-rule-bold { border: none; border-top: 2px solid #c8b89a; margin: 16px 0; }
+.r-rule      { border: none; border-top: 1px solid #e0d8cc; margin: 14px 0; }
+
+.r-sec {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--wa-dark);
+  margin-bottom: 10px; margin-top: 24px;
+  display: flex; align-items: center; gap: 10px;
+}
+.r-sec::after { content: ''; flex: 1; height: 1px; background: rgba(7,94,84,0.12); }
+
+.r-co    { font-size: 15px; font-weight: 700; color: #1a1a1a; display: flex; justify-content: space-between; align-items: baseline; }
+.r-period { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #bbb; font-weight: 400; }
+.r-jobt  { font-size: 12px; font-style: italic; color: #777; margin: 3px 0 8px; }
+
+.r-li {
+  font-size: 12.5px; color: #555; line-height: 1.65;
+  padding-left: 14px; position: relative; margin-bottom: 4px;
+}
+.r-li::before {
+  content: '·'; position: absolute; left: 3px;
+  color: var(--wa-green); font-size: 18px; line-height: 1; top: -1px;
+}
+.r-li a { color: var(--wa-mid); font-size: 10px; margin-left: 4px; }
+
+.r-skills-group { margin-bottom: 10px; }
+.r-skill-label { font-size: 10px; font-weight: 700; color: #999; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
+.r-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.r-tag {
+  font-size: 11px; background: rgba(7,94,84,0.06);
+  color: var(--wa-dark); border: 1px solid rgba(7,94,84,0.14);
+  padding: 3px 9px; border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.r-pub { margin-bottom: 12px; }
+.r-pub-title { font-size: 13px; font-weight: 600; color: #333; line-height: 1.5; }
+.r-pub-venue { font-size: 11px; color: #999; margin-top: 2px; font-family: 'IBM Plex Mono', monospace; }
+.r-pub-link  { font-size: 11px; margin-top: 2px; }
+.r-pub-link a { color: var(--wa-mid); }
+
+/* Highlight spans — tooltip via JS global div (no clipping issue) */
+.hl {
+  cursor: pointer; border-radius: 3px;
+  padding: 0 2px; position: relative; white-space: nowrap;
+  transition: background 0.15s;
+  color: #0a7a6c;
+  border-bottom: 1.5px dashed var(--wa-green);
+  background: rgba(37,211,102,0.07);
+}
+.hl::after {
+  content: '?'; font-size: 8px; font-weight: 800;
+  vertical-align: super; margin-left: 1px; opacity: 0.5; line-height: 1;
+}
+.hl:hover { background: rgba(37,211,102,0.14); color: var(--wa-dark); }
+
+/* Global floating tooltip (appended to body, avoids overflow clipping) */
+#g-tip {
+  position: fixed; z-index: 9999; pointer-events: none;
+  background: #1aab96; color: #fff;
+  font-size: 12px; font-family: 'IBM Plex Mono', monospace;
+  padding: 5px 12px; border-radius: 6px;
+  white-space: nowrap; box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  opacity: 0; transition: opacity 0.15s;
+  transform: translateX(-50%);
+}
+#g-tip.show { opacity: 1; }
+
+/* ════════════════════════════
+   RIGHT — WHATSAPP CHAT
+════════════════════════════ */
+.chat-panel {
+  width: 400px; flex-shrink: 0;
+  display: flex; flex-direction: column;
+  border-left: 1px solid rgba(0,0,0,0.1);
+}
+
+.chat-header {
+  background: var(--wa-dark); padding: 12px 16px;
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+}
+.chat-av {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--wa-green);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800;
+  color: var(--wa-dark); flex-shrink: 0;
+}
+.chat-name   { font-size: 15px; font-weight: 600; color: #fff; line-height: 1.2; }
+.chat-status { font-size: 11px; color: rgba(255,255,255,0.65); }
+.chat-icons  { margin-left: auto; display: flex; gap: 18px; color: rgba(255,255,255,0.8); font-size: 18px; }
+.chat-icon-btn { background: none; border: none; cursor: pointer; color: rgba(255,255,255,0.8); font-size: 18px; padding: 2px; transition: color 0.15s; }
+.chat-icon-btn:hover { color: #fff; }
+
+/* Text selection popup */
+#sel-popup {
+  position: fixed; z-index: 9998; display: none;
+  background: #1a1a1a; color: #fff;
+  border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  overflow: hidden; font-family: 'DM Sans', sans-serif;
+  transform: translateX(-50%);
+  animation: popIn 0.15s ease;
+}
+@keyframes popIn { from{opacity:0;transform:translateX(-50%) scale(0.9)} to{opacity:1;transform:translateX(-50%) scale(1)} }
+#sel-popup::after {
+  content: ''; position: absolute; bottom: -6px; left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0; border-style: solid;
+  border-color: #1a1a1a transparent transparent;
+}
+#sel-ask-btn {
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 14px; cursor: pointer; border: none;
+  background: none; color: #fff; font-size: 13px;
+  font-family: 'DM Sans', sans-serif; white-space: nowrap;
+  transition: background 0.15s;
+}
+#sel-ask-btn:hover { background: rgba(255,255,255,0.1); }
+#sel-ask-btn svg { width: 14px; height: 14px; fill: var(--wa-green); flex-shrink: 0; }
+
+/* Chat messages area — actual WA tile pattern */
+.chat-msgs {
+  flex: 1; overflow-y: auto;
+  padding: 10px 8px; display: flex; flex-direction: column; gap: 3px;
+  scroll-behavior: smooth;
+  background-color: #EAE0D3;
+  background-image: linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.55)), url('/static/wa-bg-tile.png');
+  background-repeat: repeat;
+  background-size: auto, 275px auto;
+}
+.chat-msgs::-webkit-scrollbar { width: 3px; }
+.chat-msgs::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 2px; }
+
+/* Date pill */
+.date-pill {
+  align-self: center; background: rgba(0,0,0,0.15);
+  color: #fff; font-size: 10px; padding: 3px 10px;
+  border-radius: 8px; margin: 4px 0;
+}
+
+/* Message rows */
+.msg-row { display: flex; flex-direction: column; }
+
+.bubble {
+  max-width: 82%; border-radius: 8px;
+  padding: 6px 10px 18px; font-size: 12.5px;
+  line-height: 1.45; position: relative; word-break: break-word;
+}
+.bubble-time {
+  position: absolute; bottom: 3px; right: 8px;
+  font-size: 9px; color: rgba(0,0,0,0.4); white-space: nowrap;
+}
+.bubble a { color: var(--wa-mid); text-decoration: underline; }
+.bubble ul { padding-left: 16px; margin: 4px 0; }
+.bubble p  { margin: 2px 0; }
+.bubble strong { font-weight: 600; }
+
+.msg-recv { align-items: flex-start; }
+.msg-recv .bubble {
+  background: var(--wa-recv); border-top-left-radius: 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.msg-recv .bubble::before {
+  content: ''; position: absolute; top: 0; left: -7px;
+  border-width: 0 8px 8px 0; border-style: solid;
+  border-color: transparent var(--wa-recv) transparent transparent;
+}
+.msg-sent { align-items: flex-end; }
+.msg-sent .bubble {
+  background: var(--wa-sent); border-top-right-radius: 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.msg-sent .bubble::after {
+  content: ''; position: absolute; top: 0; right: -7px;
+  border-width: 0 0 8px 8px; border-style: solid;
+  border-color: transparent transparent transparent var(--wa-sent);
+}
+.bubble-time.sent { color: #059669; }
+
+/* Typing indicator */
+.typing-row { align-items: flex-start; }
+.typing-bubble {
+  background: var(--wa-recv); border-radius: 8px; border-top-left-radius: 0;
+  padding: 10px 14px; display: inline-flex; gap: 4px; align-items: center;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1); position: relative;
+}
+.typing-bubble::before {
+  content: ''; position: absolute; top: 0; left: -7px;
+  border-width: 0 8px 8px 0; border-style: solid;
+  border-color: transparent var(--wa-recv) transparent transparent;
+}
+.tdot {
+  width: 7px; height: 7px; background: #aaa; border-radius: 50%;
+  animation: tdot 1.2s ease-in-out infinite;
+}
+.tdot:nth-child(2) { animation-delay: 0.2s; }
+.tdot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes tdot { 0%,60%,100%{transform:scale(0.7);opacity:0.5} 30%{transform:scale(1);opacity:1} }
+
+/* Input bar */
+.chat-input-bar {
+  background: #f0f0f0; padding: 6px 8px;
+  display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+}
+.input-wrap {
+  flex: 1; background: #fff; border-radius: 22px;
+  display: flex; align-items: center; padding: 0 14px;
+  min-height: 38px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+#msg-input {
+  flex: 1; border: none; outline: none;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; color: #222;
+  background: transparent; padding: 6px 0;
+}
+#msg-input::placeholder { color: #aaa; }
+.send-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: none; background: var(--wa-green); cursor: pointer;
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 2px 8px rgba(37,211,102,0.35);
+}
+.send-btn:hover  { background: #20c55e; transform: scale(1.05); }
+.send-btn:disabled { background: #aaa; box-shadow: none; transform: none; cursor: default; }
+.send-btn svg { width: 18px; height: 18px; fill: #fff; }
+</style>
 </head>
-<body class="bg-gray-100 h-screen">
-    <div class="container mx-auto flex h-full">
-        <!-- Left Side: Resume PDF -->
-        <div class="w-1/2 h-full">
-            <embed src="{{ url_for('static', filename='resume.pdf') }}" type="application/pdf" class="w-full h-full">
-        </div>
-        
-        <!-- Right Side: Chatbot -->
-        <div class="w-1/2 bg-white shadow-lg p-6 rounded-lg flex flex-col h-full">
-            <!-- Title at the top of the chatbox -->
-            <div id="chatbox-title" class="flex items-center justify-center h-16 text-xl font-bold">
-                What do you want to know about Ramanathan?
-            </div>
-            <div id="chatbox" class="flex-grow overflow-y-scroll mb-4 p-4 bg-gray-100 rounded-lg">
-                <!-- Messages will be appended here -->
-            </div>
-            <form id="chat-form" class="mt-auto">
-                <input type="text" id="message-input" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="Type your message...">
-            </form>
-        </div>
+<body>
+
+<!-- Global floating tooltip -->
+<div id="g-tip"></div>
+<!-- Text selection popup -->
+<div id="sel-popup">
+  <button id="sel-ask-btn">
+    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+    Ask Ram
+  </button>
+</div>
+
+<div class="layout">
+
+  <!-- ════════ LEFT: RESUME ════════ -->
+  <div class="resume-panel" id="resume">
+
+    <div class="r-name">Ramanathan Murugappan</div>
+    <div class="r-role">AI/ML Lead Research Engineer · Bengaluru, India</div>
+    <div class="r-contact">
+      ramanathanmurugappan29@gmail.com &nbsp;·&nbsp; +91-99 444 66 701<br>
+      <a href="https://www.linkedin.com/in/ramanathan-murugappan-66a068125/" target="_blank">linkedin.com/in/ramanathan-murugappan-66a068125</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/ramanathanmurugappan" target="_blank">github.com/ramanathanmurugappan</a>
+      &nbsp;·&nbsp;
+      <a href="https://scholar.google.com/citations?user=YsEC2aEAAAAJ" target="_blank">Google Scholar</a>
     </div>
 
-    <script>
-        const chatForm = document.getElementById('chat-form');
-        const messageInput = document.getElementById('message-input');
-        const chatbox = document.getElementById('chatbox');
-        let loadingMessage = null;  // To keep track of the loading message element
+    <hr class="r-rule-bold">
 
-        // Function to add a user question to the chatbox
-        function addUserMessage(message) {
-            const userMessage = document.createElement('div');
-            userMessage.classList.add('bg-blue-500', 'text-white', 'p-2', 'rounded-lg', 'mb-2', 'self-end');
-            userMessage.textContent = `Inquirer: ${message}`;
-            chatbox.appendChild(userMessage);
-            chatbox.scrollTop = chatbox.scrollHeight;
-        }
+    <div class="r-sec">Summary</div>
+    <p style="font-size:13px;color:#555;line-height:1.7;">
+      Experienced AI/ML engineer with 6+ years of expertise spanning Generative AI Engineering,
+      Agentic AI, MLOps, and Data Science. Currently leading R&amp;D in production-grade LLM/RAG
+      systems at ITC Infotech.
+    </p>
 
-        // Function to add a bot response to the chatbox
-        function addBotMessage(message) {
-            // Remove the loading message if it's there
-            if (loadingMessage) {
-                loadingMessage.remove();
-                loadingMessage = null;
-            }
-            
-            const htmlMessage = marked.parse(`Ramanathan Bot: ${message}`);
-            const botMessage = document.createElement('div');
-            botMessage.classList.add('bg-gray-300', 'p-2', 'rounded-lg', 'mb-2', 'self-start');
-            botMessage.innerHTML = htmlMessage;
-            chatbox.appendChild(botMessage);
-            chatbox.scrollTop = chatbox.scrollHeight;
-        }
+    <div class="r-sec">Experience</div>
 
-        // Function to show the loading indicator
-        function showLoadingIndicator() {
-            loadingMessage = document.createElement('div');
-            loadingMessage.classList.add('bg-gray-300', 'p-2', 'rounded-lg', 'mb-2', 'self-start', 'flex', 'items-center');
-            loadingMessage.innerHTML = `
-                <svg class="animate-spin h-5 w-5 text-gray-800 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.965 7.965 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Thinking... Just give me a minute...
-            `;
-            chatbox.appendChild(loadingMessage);
-            chatbox.scrollTop = chatbox.scrollHeight;
-        }
+    <div class="r-co">ITC Infotech <span class="r-period">Mar 2025 – Present</span></div>
+    <div class="r-jobt">AI/ML Lead Research Engineer (R&amp;D) · Bengaluru</div>
+    <div class="r-li">Architected HR RAG app over <span class="hl" data-q="Tell me about the HR RAG system you built at ITC Infotech.">700+ documents</span> using <span class="hl" data-q="What is Docling and how did you use it?">Docling</span>, <span class="hl" data-q="How did you use OpenSearch for hybrid search?">OpenSearch hybrid search</span> &amp; Agentic RAG via Open WebUI</div>
+    <div class="r-li">Built eval &amp; observability stack with <span class="hl" data-q="How do you use DeepEval and LangSmith for LLM observability?">DeepEval, LangSmith, and Langfuse</span> for production-grade LLM monitoring</div>
+    <div class="r-li">Led multi-agent architecture for end-to-end <span class="hl" data-q="Tell me about the ServiceNow multi-agent automation project.">ServiceNow automation</span> using a Master Orchestrator Agent with <span class="hl" data-q="How are you using MCP Protocol in production multi-agent systems?">MCP Protocol</span> &amp; <span class="hl" data-q="How did you use LangGraph in the ServiceNow project?">LangGraph</span> for dynamic routing</div>
 
-        chatForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const message = messageInput.value.trim();
+    <hr class="r-rule">
 
-            if (message === '') return;
+    <div class="r-co">Accenture AI-Hub <span class="r-period">Aug 2021 – Mar 2025</span></div>
+    <div class="r-jobt">Data Science Analyst (Data &amp; AI) · Bengaluru</div>
+    <div class="r-li">Built <span class="hl" data-q="Tell me about Retail Lens — the visual search tool you built at Accenture.">Retail Lens</span> — visual search using <span class="hl" data-q="How did you use SAM and CLIP-ViT-B for Retail Lens?">SAM + CLIP-ViT-B embeddings</span> with <span class="hl" data-q="Which vector databases have you worked with?">Qdrant</span> vector DB for image-based product discovery</div>
+    <div class="r-li">Developed <span class="hl" data-q="Tell me about the GenAI Asthma Prediction Tool you built.">GenAI Asthma Prediction Tool</span> with RAG &amp; LLM chat, integrated with Excel/CSV via Streamlit across two client demos</div>
+    <div class="r-li">Engineered <span class="hl" data-q="Tell me about the fee-optimising model for plasma donations.">fee-optimising model for plasma donations</span> using customer segmentation, profiling, and automated web scraping</div>
+    <div class="r-li">Architected centralized marketing database for Google, streamlining email campaigns and reducing duplication</div>
+    <div class="r-li">Analysed the dengue vaccine's impact in Indonesia; designed <span class="hl" data-q="What dashboarding tools have you used in your work?">PowerBI dashboards</span> to enhance field sales decision-making</div>
 
-            // Add the user's question to the chatbox
-            addUserMessage(message);
+    <hr class="r-rule">
 
-            // Clear the input field immediately after capturing the message
-            messageInput.value = '';
+    <div class="r-co">Kaleidofin <span class="r-period">Dec 2019 – Aug 2021</span></div>
+    <div class="r-jobt">Data Science Analyst · Chennai</div>
+    <div class="r-li">Built <span class="hl" data-q="Describe your credit risk modelling work at Kaleidofin.">credit risk models</span> using Bagging &amp; Boosting to score new-to-credit and MFI customers with monthly risk analysis cycles</div>
+    <div class="r-li">Developed payment prediction models using <span class="hl" data-q="What ML models did you build at Kaleidofin for payment prediction?">RandomForest, LightGBM &amp; GridSearchCV</span> — improved call centre efficiency</div>
+    <div class="r-li">Deployed partner dashboards and automated workflows with <span class="hl" data-q="How did you use Apache Airflow at Kaleidofin?">Apache Airflow</span></div>
 
-            // Show loading indicator
-            showLoadingIndicator();
+    <hr class="r-rule">
 
-            try {
-                // Send the message to the Flask backend
-                const response = await fetch('/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ message }),
-                });
+    <div class="r-co" style="font-size:14px">GrowthX Capstone <span class="r-period">Mar 2024 – Jun 2024</span></div>
+    <div class="r-li"><span class="hl" data-q="How did you win the GrowthX Capstone competition?">Won the GrowthX Capstone among 300 members</span> — presented a ₹250Cr → ₹500Cr revenue strategy for <span class="hl" data-q="Tell me about the Blue Tokai revenue strategy you built.">Blue Tokai Coffee</span> to Founder &amp; Co-Founder
+      <a href="https://www.linkedin.com/posts/ramanathan-murugappan-66a068125_our-journey-to-doubling-blue-tokais-revenue-activity-7222875771843796992-vy4b" target="_blank">→ LinkedIn</a>
+    </div>
 
-                // Parse the response
-                const data = await response.json();
+    <div class="r-sec">Technical Skills</div>
 
-                // Add the bot's response to the chatbox
-                addBotMessage(data.message);
+    <div class="r-skills-group">
+      <div class="r-skill-label">Gen AI &amp; LLM</div>
+      <div class="r-tags">
+        <span class="r-tag">LangChain</span><span class="r-tag">LangGraph</span><span class="r-tag">CrewAI</span>
+        <span class="r-tag">AutoGen</span><span class="r-tag">Hugging Face Transformers</span>
+      </div>
+    </div>
+    <div class="r-skills-group">
+      <div class="r-skill-label">Agentic AI</div>
+      <div class="r-tags">
+        <span class="r-tag">MCP Protocol</span><span class="r-tag">RAG Pipelines</span>
+        <span class="r-tag">Tool Calling</span><span class="r-tag">ReAct Agents</span>
+        <span class="r-tag">Multi-Agent Orchestration</span>
+      </div>
+    </div>
+    <div class="r-skills-group">
+      <div class="r-skill-label">Vector Databases</div>
+      <div class="r-tags">
+        <span class="r-tag">Qdrant</span><span class="r-tag">Pinecone</span>
+        <span class="r-tag">OpenSearch</span><span class="r-tag">ChromaDB</span>
+      </div>
+    </div>
+    <div class="r-skills-group">
+      <div class="r-skill-label">ML &amp; Data</div>
+      <div class="r-tags">
+        <span class="r-tag">Python</span><span class="r-tag">PyTorch</span><span class="r-tag">TensorFlow</span>
+        <span class="r-tag">Scikit-learn</span><span class="r-tag">Pandas</span><span class="r-tag">PySpark</span>
+        <span class="r-tag">PostgreSQL</span><span class="r-tag">MongoDB</span>
+      </div>
+    </div>
+    <div class="r-skills-group">
+      <div class="r-skill-label">Cloud &amp; MLOps</div>
+      <div class="r-tags">
+        <span class="r-tag">AWS (Lambda · EC2 · S3 · Bedrock)</span><span class="r-tag">Docker</span>
+        <span class="r-tag">OpenShift</span><span class="r-tag">Kubernetes</span>
+        <span class="r-tag">MLflow</span><span class="r-tag">Apache Airflow</span>
+      </div>
+    </div>
+    <div class="r-skills-group">
+      <div class="r-skill-label">Frameworks &amp; Tools</div>
+      <div class="r-tags">
+        <span class="r-tag">FastAPI</span><span class="r-tag">Flask</span><span class="r-tag">React.js</span>
+        <span class="r-tag">TypeScript</span><span class="r-tag">Streamlit</span><span class="r-tag">Git</span>
+      </div>
+    </div>
+    <div class="r-skills-group">
+      <div class="r-skill-label">Observability</div>
+      <div class="r-tags">
+        <span class="r-tag">DeepEval</span><span class="r-tag">LangSmith</span><span class="r-tag">Langfuse</span>
+      </div>
+    </div>
+    <div class="r-skills-group">
+      <div class="r-skill-label">Voice AI &amp; Web</div>
+      <div class="r-tags">
+        <span class="r-tag">Groq API</span><span class="r-tag">Deepgram (STT)</span>
+        <span class="r-tag">VoiceRSS (TTS)</span><span class="r-tag">Web Audio API</span>
+      </div>
+    </div>
+    <div class="r-skills-group">
+      <div class="r-skill-label">Dashboarding</div>
+      <div class="r-tags">
+        <span class="r-tag">PowerBI</span><span class="r-tag">AWS QuickSight</span>
+        <span class="r-tag">Plotly</span><span class="r-tag">Matplotlib</span><span class="r-tag">Seaborn</span>
+      </div>
+    </div>
 
-            } catch (error) {
-                console.error('Error:', error);
-                addBotMessage("Sorry, something went wrong. Please try again later.");
-            }
-        });
-    </script>
+    <div class="r-sec">Personal Projects</div>
+
+    <div class="r-co" style="font-size:14px">
+      Resume Chatbot
+      <span class="r-period"><a href="https://resume-chatbot-9860.onrender.com" target="_blank" style="color:var(--wa-mid);font-size:11px">→ Live Demo</a></span>
+    </div>
+    <div class="r-li">AI twin enabling interview-style questions about a resume — this chatbot!</div>
+    <div class="r-li">Tech: Python · Flask · LiteLLM · Groq (Llama 3.3 70B) · Docker · Render</div>
+
+    <div class="r-co" style="font-size:14px;margin-top:12px">
+      Two-Stage Flight On-Time Prediction
+      <span class="r-period"><a href="https://github.com/ramanathanmurugappan/prediction-of-on-time-performance-of-flights" target="_blank" style="color:var(--wa-mid);font-size:11px">→ GitHub</a></span>
+    </div>
+    <div class="r-li">Stage 1: Binary classification to predict if a US flight will be delayed</div>
+    <div class="r-li">Stage 2: Regression to predict delay duration in minutes</div>
+    <div class="r-li">Tech: Python · Scikit-learn · Pandas · NumPy · Matplotlib</div>
+
+    <div class="r-sec">Publications &amp; Research</div>
+
+    <div class="r-pub">
+      <div class="r-pub-title">
+        <span class="hl" data-q="Tell me about your FICC 2020 paper on predicting movie lifetime.">A Two-Stage Machine Learning Approach to Forecast the Lifetime of Movies in a Multiplex</span>
+      </div>
+      <div class="r-pub-venue">Future of Information and Communication Conference (FICC) 2020 · San Francisco, USA</div>
+      <div class="r-pub-link"><a href="https://link.springer.com/chapter/10.1007%2F978-3-030-39442-4_36" target="_blank">→ Springer Link</a></div>
+    </div>
+
+    <div class="r-pub">
+      <div class="r-pub-title">
+        <span class="hl" data-q="Tell me about your IEEE IS'20 paper on human stress detection.">User-Independent Human Stress Detection</span>
+      </div>
+      <div class="r-pub-venue">IEEE Intelligent Systems IS'20 · Varna, Bulgaria · August 2020</div>
+      <div class="r-pub-link"><a href="https://ieeexplore.ieee.org/abstract/document/9199928" target="_blank">→ IEEE Xplore</a></div>
+    </div>
+
+    <div class="r-sec">Certifications</div>
+    <div class="r-li"><span class="hl" data-q="Tell me about your Red Hat OpenShift certification.">Red Hat Certified Specialist in OpenShift Administration</span>
+      <a href="https://www.credly.com/badges/45ce2f1f-f165-4b63-9847-84b3ad080282/linked_in_profile" target="_blank">Credly</a></div>
+    <div class="r-li">Generative AI for Developers — Google
+      <a href="https://www.cloudskillsboost.google/public_profiles/32dcaf29-8b49-4884-8e25-951c744f228d" target="_blank">Cloud Skills Boost</a></div>
+    <div class="r-li">Advanced Analytics for Data Scientists — Workera</div>
+    <div class="r-li">Cloud Computing for Data Scientists — Workera</div>
+    <div class="r-li">Data Scientist Core I / II / III v3 — Workera</div>
+    <div class="r-li">Responsible AI — Workera</div>
+    <div class="r-li">Google Analytics Certification
+      <a href="https://skillshop.credential.net/685f04bb-5beb-4ea7-be1c-fe2abd0d6141" target="_blank">Credential</a></div>
+    <div class="r-li">Introduction to Cloud Computing — Coursera
+      <a href="https://www.coursera.org/account/accomplishments/records/KQSZCSSCNWGR" target="_blank">Certificate</a></div>
+    <div class="r-li">Introduction to Web Development (HTML, CSS, JS) — Coursera
+      <a href="https://www.coursera.org/account/accomplishments/records/A33NQGGEUKTG" target="_blank">Certificate</a></div>
+
+    <div class="r-sec">Education</div>
+    <div class="r-co" style="font-size:14px">Anna University – M.I.T Campus <span class="r-period">2018 – 2020</span></div>
+    <div class="r-jobt">M.E. in Mechatronics</div>
+    <div class="r-co" style="font-size:14px;margin-top:10px">Anna University <span class="r-period">2013 – 2017</span></div>
+    <div class="r-jobt">B.E. in Mechanical Engineering</div>
+
+    <div class="r-sec">Languages</div>
+    <div class="r-li"><strong>Tamil</strong> — Native</div>
+    <div class="r-li"><strong>English</strong> — Fluent (Professional)</div>
+    <div class="r-li"><strong>Japanese</strong> — Basic</div>
+
+    <div class="r-sec">Achievements</div>
+    <div class="r-li">2 peer-reviewed publications — IEEE IS'20 &amp; FICC 2020</div>
+    <div class="r-li">GrowthX Capstone Winner — ₹250Cr → ₹500Cr Blue Tokai revenue strategy (2024)</div>
+
+  </div><!-- /resume-panel -->
+
+  <!-- ════════ RIGHT: WHATSAPP CHAT ════════ -->
+  <div class="chat-panel">
+    <div class="chat-header">
+      <div class="chat-av">R</div>
+      <div>
+        <div class="chat-name">Ram · AI/ML Lead</div>
+        <div class="chat-status" id="chat-status">online · click any highlighted term or type below</div>
+      </div>
+      <div class="chat-icons">
+        <button class="chat-icon-btn" id="btn-phone" title="Call Ram">📞</button>
+        <button class="chat-icon-btn" id="btn-email" title="Email Ram">✉️</button>
+      </div>
+    </div>
+
+    <div class="chat-msgs" id="chatbox">
+      <div class="date-pill">Today</div>
+      <div class="msg-row msg-recv">
+        <div class="bubble">
+          Hi! I'm Ramanathan's AI twin. Ask me anything about my background, or click any
+          <span style="color:var(--wa-dark);font-weight:600;border-bottom:1px dashed var(--wa-green)">highlighted term</span>
+          in the resume on the left.
+          <div class="bubble-time">now</div>
+        </div>
+      </div>
+    </div>
+
+    <form class="chat-input-bar" id="chat-form">
+      <div class="input-wrap">
+        <input type="text" id="msg-input" placeholder="Type a message" autocomplete="off">
+      </div>
+      <button class="send-btn" id="send-btn" type="submit">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </form>
+  </div>
+
+</div><!-- /layout -->
+
+<script>
+  marked.setOptions({ breaks: true, gfm: true });
+
+  const chatbox  = document.getElementById('chatbox');
+  const msgInput = document.getElementById('msg-input');
+  const sendBtn  = document.getElementById('send-btn');
+  const statusEl = document.getElementById('chat-status');
+  const gTip     = document.getElementById('g-tip');
+  const selPopup = document.getElementById('sel-popup');
+  const selBtn   = document.getElementById('sel-ask-btn');
+
+  let history = [];
+  let busy    = false;
+  let selText = '';
+
+  function nowTime() {
+    return new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+  }
+
+  function scrollDown() { chatbox.scrollTop = chatbox.scrollHeight; }
+
+  function escHtml(t) {
+    return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function addUserBubble(text) {
+    const row = document.createElement('div');
+    row.className = 'msg-row msg-sent';
+    row.innerHTML = `<div class="bubble">${escHtml(text)}<div class="bubble-time sent">${nowTime()} ✓✓</div></div>`;
+    chatbox.appendChild(row);
+    scrollDown();
+  }
+
+  function showTyping() {
+    const row = document.createElement('div');
+    row.className = 'msg-row typing-row';
+    row.id = 'typing-row';
+    row.innerHTML = `<div class="typing-bubble"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div>`;
+    chatbox.appendChild(row);
+    scrollDown();
+  }
+
+  function removeTyping() { document.getElementById('typing-row')?.remove(); }
+
+  function addBotBubble() {
+    const row = document.createElement('div');
+    row.className = 'msg-row msg-recv';
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    row.appendChild(bubble);
+    chatbox.appendChild(row);
+    scrollDown();
+    return bubble;
+  }
+
+  async function sendMessage(text) {
+    if (!text.trim() || busy) return;
+    busy = true;
+    sendBtn.disabled = true;
+    statusEl.textContent = 'typing...';
+
+    addUserBubble(text);
+    showTyping();
+
+    try {
+      const res = await fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, history }),
+      });
+
+      removeTyping();
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        const row = document.createElement('div');
+        row.className = 'msg-row msg-recv';
+        row.innerHTML = `<div class="bubble" style="color:#dc2626">${escHtml(err.error || 'Something went wrong.')}<div class="bubble-time">${nowTime()}</div></div>`;
+        chatbox.appendChild(row);
+        scrollDown();
+        return;
+      }
+
+      const botBubble = addBotBubble();
+      const reader = res.body.getReader();
+      const dec = new TextDecoder();
+      let full = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        full += dec.decode(value, { stream: true });
+        botBubble.innerHTML = DOMPurify.sanitize(marked.parse(full));
+        scrollDown();
+      }
+
+      const timeEl = document.createElement('div');
+      timeEl.className = 'bubble-time';
+      timeEl.textContent = nowTime();
+      botBubble.appendChild(timeEl);
+
+      history.push({ role: 'user', content: text });
+      history.push({ role: 'assistant', content: full });
+      if (history.length > 20) history = history.slice(-20);
+
+    } catch (e) {
+      removeTyping();
+      const row = document.createElement('div');
+      row.className = 'msg-row msg-recv';
+      row.innerHTML = `<div class="bubble" style="color:#dc2626">Connection error. Please try again.<div class="bubble-time">${nowTime()}</div></div>`;
+      chatbox.appendChild(row);
+      scrollDown();
+    } finally {
+      busy = false;
+      sendBtn.disabled = false;
+      statusEl.textContent = 'online · click any highlighted term or type below';
+      msgInput.focus();
+    }
+  }
+
+  // Form submit
+  document.getElementById('chat-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const msg = msgInput.value.trim();
+    if (!msg) return;
+    msgInput.value = '';
+    sendMessage(msg);
+  });
+
+  // Highlighted term click → send to chat
+  document.getElementById('resume').addEventListener('click', e => {
+    const el = e.target.closest('.hl');
+    if (!el) return;
+    const q = el.dataset.q;
+    if (q) sendMessage(q);
+  });
+
+  // Global floating tooltip
+  document.getElementById('resume').addEventListener('mouseover', e => {
+    const el = e.target.closest('.hl');
+    if (!el || !el.dataset.q) return;
+    gTip.textContent = '💬 ' + el.dataset.q;
+    const r = el.getBoundingClientRect();
+    gTip.style.left = (r.left + r.width / 2) + 'px';
+    gTip.style.top  = (r.top - 38) + 'px';
+    gTip.classList.add('show');
+  });
+  document.getElementById('resume').addEventListener('mouseout', e => {
+    if (e.target.closest('.hl')) gTip.classList.remove('show');
+  });
+
+  // ── Phone & Email icon actions ──
+  function addInfoBubble(text) {
+    const row = document.createElement('div');
+    row.className = 'msg-row msg-recv';
+    row.innerHTML = `<div class="bubble">${text}<div class="bubble-time">${nowTime()}</div></div>`;
+    chatbox.appendChild(row);
+    scrollDown();
+  }
+  document.getElementById('btn-phone').addEventListener('click', () => {
+    addInfoBubble('📞 <strong>+91-99 444 66 701</strong><br><small style="color:#888">WhatsApp available on this number</small>');
+  });
+  document.getElementById('btn-email').addEventListener('click', () => {
+    addInfoBubble('✉️ <strong><a href="mailto:ramanathanmurugappan29@gmail.com">ramanathanmurugappan29@gmail.com</a></strong>');
+  });
+
+  // ── Text-selection "Ask Ram" popup ──
+  function hideSelPopup() {
+    selPopup.style.display = 'none';
+    selText = '';
+  }
+
+  document.getElementById('resume').addEventListener('mouseup', () => {
+    setTimeout(() => {
+      const sel = window.getSelection();
+      const txt = sel ? sel.toString().trim() : '';
+      if (txt.length < 3) { hideSelPopup(); return; }
+      selText = txt;
+      const range = sel.getRangeAt(0);
+      const rect  = range.getBoundingClientRect();
+      selPopup.style.display = 'block';
+      selPopup.style.left    = (rect.left + rect.width / 2) + 'px';
+      selPopup.style.top     = (rect.top + window.scrollY - 50) + 'px';
+    }, 10);
+  });
+
+  selBtn.addEventListener('mousedown', e => {
+    e.preventDefault(); // keep selection alive
+    const q = selText;
+    hideSelPopup();
+    window.getSelection()?.removeAllRanges();
+    if (q) sendMessage('Tell me about: "' + q + '"');
+  });
+
+  document.addEventListener('mousedown', e => {
+    if (!selPopup.contains(e.target) && !document.getElementById('resume').contains(e.target)) {
+      hideSelPopup();
+    }
+  });
+</script>
 </body>
 </html>

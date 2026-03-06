@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ramanathan Murugappan — Resume</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --wa-dark:  #075E54;
+  --wa-mid:   #128C7E;
+  --wa-green: #25D366;
+  --wa-sent:  #DCF8C6;
+  --wa-bg:    #ECE5DD;
+}
+
+html, body {
+  height: 100%; overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* ── Left: Resume panel ── */
+.resume-panel {
+  flex: 1;
+  overflow-y: auto;
+  background: #faf6ef;
+  padding: 44px 52px;
+  font-family: 'Lora', serif;
+}
+
+.r-name  { font-size: 26px; font-weight: 600; color: #1a1a1a; letter-spacing: -0.02em; }
+.r-role  { font-size: 13px; font-style: italic; color: #888; margin-top: 3px; }
+.r-contact { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #aaa; margin-top: 6px; }
+
+.r-rule-bold { border: none; border-top: 2px solid #c8b89a; margin: 16px 0; }
+.r-rule      { border: none; border-top: 1px solid #e0d8cc; margin: 12px 0; }
+
+.r-sec {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--wa-dark);
+  margin-bottom: 10px; margin-top: 22px;
+}
+
+.r-co    { font-size: 15px; font-weight: 700; color: #1a1a1a; display: flex; justify-content: space-between; align-items: baseline; }
+.r-period { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #bbb; font-weight: 400; }
+.r-jobt  { font-size: 12.5px; font-style: italic; color: #666; margin: 3px 0 7px; }
+
+.r-li {
+  font-size: 12.5px; color: #555; line-height: 1.65;
+  padding-left: 14px; position: relative; margin-bottom: 4px;
+}
+.r-li::before {
+  content: '·'; position: absolute; left: 3px;
+  color: var(--wa-green); font-size: 18px; line-height: 1; top: -1px;
+}
+
+.r-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.r-tag  {
+  font-size: 11px; background: rgba(7,94,84,0.06);
+  color: var(--wa-dark); border: 1px solid rgba(7,94,84,0.15);
+  padding: 3px 10px; border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* ── Highlight spans ── */
+.hl {
+  cursor: pointer; border-radius: 3px;
+  padding: 0 2px; position: relative;
+  white-space: nowrap;
+  transition: background 0.15s, box-shadow 0.15s;
+  color: #0a7a6c;
+  border-bottom: 1.5px dashed var(--wa-green);
+  background: rgba(37,211,102,0.07);
+}
+.hl::after {
+  content: '?'; font-size: 8px; font-weight: 800;
+  vertical-align: super; margin-left: 1px; opacity: 0.55; line-height: 1;
+}
+.hl:hover {
+  color: var(--wa-dark);
+  background: rgba(37,211,102,0.14);
+  box-shadow: 0 0 0 2px rgba(37,211,102,0.1);
+}
+.hl-tip {
+  position: absolute; bottom: calc(100% + 7px); left: 50%;
+  transform: translateX(-50%);
+  background: #1aab96; color: #fff;
+  font-size: 12px; font-family: 'IBM Plex Mono', monospace;
+  padding: 5px 12px; border-radius: 6px;
+  white-space: nowrap; pointer-events: none;
+  opacity: 0; transition: opacity 0.15s; z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+}
+.hl:hover .hl-tip { opacity: 1; }
+
+/* ── Right: WhatsApp chat panel ── */
+.chat-panel {
+  width: 380px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba(0,0,0,0.12);
+}
+
+.chat-header {
+  background: var(--wa-dark);
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 12px;
+  flex-shrink: 0;
+}
+.chat-av {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--wa-green);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800;
+  color: var(--wa-dark); flex-shrink: 0;
+}
+.chat-name   { font-size: 15px; font-weight: 600; color: #fff; }
+.chat-status { font-size: 11px; color: rgba(255,255,255,0.6); }
+
+.chat-msgs {
+  flex: 1; padding: 14px 12px;
+  display: flex; flex-direction: column; gap: 8px;
+  overflow-y: auto;
+  background-color: var(--wa-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cg stroke='%23b5a89a' stroke-width='1.5' fill='none' opacity='0.45'%3E%3Crect x='18' y='18' width='62' height='40' rx='11'/%3E%3Cpath d='M32 58l-8 15 20-15' stroke-linejoin='round'/%3E%3Ccircle cx='38' cy='38' r='3.5' fill='%23b5a89a'/%3E%3Ccircle cx='50' cy='38' r='3.5' fill='%23b5a89a'/%3E%3Ccircle cx='62' cy='38' r='3.5' fill='%23b5a89a'/%3E%3Crect x='210' y='22' width='88' height='42' rx='11'/%3E%3Cpath d='M280 64l10 14-22-14' stroke-linejoin='round'/%3E%3Cline x1='226' y1='38' x2='282' y2='38' stroke-width='1.5'/%3E%3Cline x1='226' y1='50' x2='266' y2='50' stroke-width='1.5'/%3E%3Cpath d='M28 158c-2-3-7-3-9-1l-4 4c-2 3 0 6 2 8l14 14c2 2 6 4 9 2l4-4c3-2 3-7 1-9l-4-4c-2-1-4 0-5 1-2-1-4-4-6-6-2-2-5-5-6-7 1-1 2-3 1-5z' fill='%23b5a89a'/%3E%3Cpath d='M98 175l7 8 14-18' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M110 175l7 8 14-18' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='165' cy='155' r='24'/%3E%3Ccircle cx='156' cy='147' r='3.5' fill='%23b5a89a'/%3E%3Ccircle cx='174' cy='147' r='3.5' fill='%23b5a89a'/%3E%3Cpath d='M155 162q10 13 20 0' stroke-linecap='round'/%3E%3Crect x='218' y='218' width='72' height='52' rx='8'/%3E%3Ccircle cx='254' cy='244' r='14'/%3E%3Ccircle cx='254' cy='244' r='7'/%3E%3Cpath d='M234 218l8-10h16l8 10' stroke-linejoin='round'/%3E%3Ccircle cx='278' cy='227' r='3.5' fill='%23b5a89a'/%3E%3Crect x='272' y='100' width='20' height='36' rx='10'/%3E%3Cpath d='M262 129q0 20 20 20t20-20' stroke-linecap='round'/%3E%3Cline x1='282' y1='149' x2='282' y2='163' stroke-width='2'/%3E%3Cline x1='272' y1='163' x2='292' y2='163'/%3E%3Cpath d='M42 270c0-10 14-10 14 0 0-10 14-10 14 0 0 14-14 25-14 25s-14-11-14-25z'/%3E%3Crect x='118' y='252' width='52' height='34' rx='9'/%3E%3Cpath d='M130 286l-7 13 17-13'/%3E%3Cline x1='130' y1='265' x2='158' y2='265'/%3E%3Cline x1='130' y1='275' x2='150' y2='275'/%3E%3Cpath d='M188 70l4 9 9 4-9 4-4 9-4-9-9-4 9-4z' fill='%23b5a89a'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 320px 320px;
+}
+
+.msg-recv {
+  background: #fff;
+  border-radius: 10px; border-top-left-radius: 2px;
+  padding: 9px 13px; font-size: 13px; color: #333; line-height: 1.55;
+  max-width: 85%; box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.msg-sent {
+  background: var(--wa-sent);
+  border-radius: 10px; border-top-right-radius: 2px;
+  padding: 9px 13px; font-size: 13px; color: #333; line-height: 1.55;
+  max-width: 85%; align-self: flex-end;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.msg-time {
+  font-size: 10px; color: rgba(0,0,0,0.35);
+  text-align: right; margin-top: 3px;
+}
+.msg-typing {
+  display: flex; gap: 4px; align-items: center;
+  padding: 10px 14px; background: #fff;
+  border-radius: 10px; border-top-left-radius: 2px;
+  width: 64px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.td {
+  width: 6px; height: 6px; border-radius: 50%; background: #aaa;
+  animation: td 1.2s infinite;
+}
+.td:nth-child(2) { animation-delay: .2s; }
+.td:nth-child(3) { animation-delay: .4s; }
+@keyframes td { 0%,80%,100%{transform:scale(0.6);opacity:0.4} 40%{transform:scale(1);opacity:1} }
+
+.chat-input-bar {
+  background: #f0f0f0; padding: 8px 12px;
+  display: flex; align-items: center; gap: 8px;
+  flex-shrink: 0;
+}
+.chat-input {
+  flex: 1; background: #fff; border-radius: 22px;
+  padding: 9px 16px; font-size: 13px; color: #bbb;
+  font-family: 'DM Sans', sans-serif;
+}
+.chat-send {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--wa-green);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; cursor: pointer;
+}
+.chat-send svg { width: 18px; height: 18px; fill: #fff; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ── Left: Resume ── -->
+  <div class="resume-panel" id="resume">
+
+    <div class="r-name">Ramanathan Murugappan</div>
+    <div class="r-role">AI/ML Lead Research Engineer · Bengaluru, India</div>
+    <div class="r-contact">ramanathanmurugappan29@gmail.com &nbsp;·&nbsp; +91-99 444 66 701 &nbsp;·&nbsp; linkedin.com/in/ramanathan-murugappan-66a068125</div>
+
+    <hr class="r-rule-bold">
+
+    <div class="r-sec">Summary</div>
+    <p style="font-size:13px;color:#555;line-height:1.7;">
+      Experienced AI/ML engineer with 6+ years of expertise spanning Generative AI Engineering, Agentic AI, MLOps, and Data Science. Currently leading R&amp;D in production-grade LLM/RAG systems at ITC Infotech.
+    </p>
+
+    <div class="r-sec">Experience</div>
+
+    <div class="r-co">ITC Infotech <span class="r-period">Mar 2025 – Present</span></div>
+    <div class="r-jobt">AI/ML Lead Research Engineer (R&D) · Bengaluru</div>
+    <div class="r-li">Architected HR RAG app over 700+ documents using Docling, OpenSearch hybrid search &amp; Agentic RAG via Open WebUI</div>
+    <div class="r-li">Built eval &amp; observability stack with DeepEval, LangSmith, and Langfuse for production-grade LLM monitoring</div>
+    <div class="r-li">Led multi-agent architecture for ServiceNow automation — Master Orchestrator Agent with MCP Protocol &amp; LangGraph for dynamic routing</div>
+
+    <hr class="r-rule">
+
+    <div class="r-co">Accenture AI-Hub <span class="r-period">Aug 2021 – Mar 2025</span></div>
+    <div class="r-jobt">Data Science Analyst (Data &amp; AI) · Bengaluru</div>
+    <div class="r-li">Built Retail Lens — visual search using SAM + CLIP-ViT-B embeddings with Qdrant vector DB for image-based product discovery</div>
+    <div class="r-li">Developed GenAI Asthma Prediction Tool with RAG &amp; LLM chat, integrated with Excel/CSV via Streamlit across two client demos</div>
+    <div class="r-li">Engineered fee-optimising model for plasma donations using customer segmentation, profiling, and automated web scraping</div>
+    <div class="r-li">Architected centralized marketing database for Google, streamlining email campaigns and reducing duplication</div>
+    <div class="r-li">Analysed dengue vaccine impact in Indonesia — designed PowerBI dashboards for field sales decision-making</div>
+
+    <hr class="r-rule">
+
+    <div class="r-co">Kaleidofin <span class="r-period">Dec 2019 – Aug 2021</span></div>
+    <div class="r-jobt">Data Science Analyst · Chennai</div>
+    <div class="r-li">Built credit risk models using Bagging &amp; Boosting to score new-to-credit and MFI customers with monthly risk analysis cycles</div>
+    <div class="r-li">Developed payment prediction models using RandomForest, LightGBM &amp; GridSearchCV — improved call centre efficiency</div>
+    <div class="r-li">Deployed partner dashboards and automated workflows with Apache Airflow</div>
+
+    <hr class="r-rule">
+
+    <div class="r-co" style="font-size:14px">GrowthX Capstone <span class="r-period">Mar 2024 – Jun 2024</span></div>
+    <div class="r-li">Won the GrowthX Capstone among 300 members — presented ₹250Cr → ₹500Cr revenue strategy for Blue Tokai Coffee to Founder &amp; Co-Founder</div>
+
+    <div class="r-sec">Technical Skills</div>
+    <div class="r-tags">
+      <span class="r-tag">LangChain</span><span class="r-tag">LangGraph</span><span class="r-tag">CrewAI</span><span class="r-tag">AutoGen</span>
+      <span class="r-tag">MCP Protocol</span><span class="r-tag">RAG Pipelines</span><span class="r-tag">Tool Calling</span><span class="r-tag">ReAct Agents</span>
+      <span class="r-tag">Qdrant</span><span class="r-tag">Pinecone</span><span class="r-tag">OpenSearch</span><span class="r-tag">ChromaDB</span>
+      <span class="r-tag">Python</span><span class="r-tag">PyTorch</span><span class="r-tag">TensorFlow</span><span class="r-tag">Scikit-learn</span><span class="r-tag">PySpark</span>
+      <span class="r-tag">AWS Lambda</span><span class="r-tag">EC2</span><span class="r-tag">S3</span><span class="r-tag">Bedrock</span><span class="r-tag">Docker</span><span class="r-tag">OpenShift</span><span class="r-tag">MLflow</span><span class="r-tag">Apache Airflow</span>
+      <span class="r-tag">FastAPI</span><span class="r-tag">Flask</span><span class="r-tag">React.js</span><span class="r-tag">Streamlit</span>
+      <span class="r-tag">DeepEval</span><span class="r-tag">LangSmith</span><span class="r-tag">Langfuse</span>
+      <span class="r-tag">PowerBI</span><span class="r-tag">AWS QuickSight</span><span class="r-tag">Plotly</span>
+    </div>
+
+    <div class="r-sec">Education</div>
+    <div class="r-co" style="font-size:14px">Anna University – M.I.T Campus <span class="r-period">2018 – 2020</span></div>
+    <div class="r-jobt">M.E. in Mechatronics</div>
+    <div class="r-co" style="font-size:14px;margin-top:10px">Anna University <span class="r-period">2013 – 2017</span></div>
+    <div class="r-jobt">B.E. in Mechanical Engineering</div>
+
+    <div class="r-sec">Languages</div>
+    <p style="font-size:13px;color:#555">Tamil — Native &nbsp;·&nbsp; English — Fluent (Professional) &nbsp;·&nbsp; Japanese — Basic</p>
+
+    <div class="r-sec">Publications</div>
+    <div class="r-li">A Two-Stage Machine Learning Approach to Forecast the Lifetime of Movies in a Multiplex — FICC 2020, San Francisco</div>
+    <div class="r-li">User-Independent Human Stress Detection — IEEE IS'20, Varna, Bulgaria</div>
+
+    <div class="r-sec">Certifications</div>
+    <div class="r-li">Red Hat Certified Specialist in OpenShift Administration</div>
+    <div class="r-li">Generative AI for Developers — Google Cloud Skills Boost</div>
+    <div class="r-li">Advanced Analytics for Data Scientists — Workera</div>
+    <div class="r-li">Cloud Computing for Data Scientists — Workera</div>
+    <div class="r-li">Data Scientist Core I / II / III v3 — Workera</div>
+    <div class="r-li">Responsible AI — Workera</div>
+    <div class="r-li">Google Analytics Certification</div>
+
+    <div class="r-sec">Achievements</div>
+    <div class="r-li">2 peer-reviewed publications — IEEE &amp; FICC</div>
+    <div class="r-li">GrowthX Capstone Winner — ₹500Cr revenue strategy for Blue Tokai (2024)</div>
+
+  </div>
+
+  <!-- ── Right: WhatsApp Chat ── -->
+  <div class="chat-panel">
+    <div class="chat-header">
+      <div class="chat-av">R</div>
+      <div>
+        <div class="chat-name">Ram · AI/ML Lead</div>
+        <div class="chat-status">Click any highlighted term in the resume</div>
+      </div>
+    </div>
+    <div class="chat-msgs" id="chat-msgs">
+      <div class="msg-recv">
+        Hi! I'm Ramanathan — AI/ML Lead at ITC Infotech. Click any <span style="color:#075E54;font-weight:600;border-bottom:1px dashed #25D366;">highlighted term</span> in the resume to ask me about it.
+        <div class="msg-time">now</div>
+      </div>
+      <div class="msg-typing"><div class="td"></div><div class="td"></div><div class="td"></div></div>
+    </div>
+    <div class="chat-input-bar">
+      <div class="chat-input">Click a highlighted term →</div>
+      <div class="chat-send">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const HL_MAP = [
+  ['700+ documents',    'Tell me about your HR RAG system.',         'I built an HR RAG app over 700+ documents using Docling and OpenSearch hybrid search → enables fast, accurate HR policy retrieval at ITC Infotech R&D. Agentic RAG via Open WebUI handles multi-hop queries.'],
+  ['700+ docs',         'Tell me about your HR RAG system.',         'I architected an HR RAG system over 700+ documents using Docling for parsing, OpenSearch hybrid search, and Agentic RAG via Open WebUI → production-grade retrieval at ITC Infotech.'],
+  ['MCP Protocol',      'How did you use MCP Protocol?',            'I used MCP (Model Context Protocol) to build a Master Orchestrator Agent → dynamically routes tasks to specialized sub-agents for ServiceNow ITSM automation without hardcoded pipelines.'],
+  ['MCP',               'How did you use MCP?',                     'I used MCP (Model Context Protocol) as the routing layer for a multi-agent ServiceNow automation system → the Master Orchestrator selects the right agent based on task context at runtime.'],
+  ['LangGraph',         'How did you use LangGraph?',               'I used LangGraph to wire stateful multi-agent workflows with directed graphs → precise control over execution flow for the ServiceNow automation system at ITC Infotech.'],
+  ['LangSmith',         'Tell me about your observability stack.',   'I built an observability stack with DeepEval for automated LLM eval, LangSmith for trace monitoring, and Langfuse for usage tracking → production-grade quality gates for LLM systems.'],
+  ['Langfuse',          'What is Langfuse used for in your stack?',  'I used Langfuse alongside LangSmith and DeepEval → end-to-end tracing, cost tracking, and automated quality evaluation for production LLM pipelines at ITC Infotech.'],
+  ['DeepEval',          'What is your LLM evaluation setup?',       'I used DeepEval to automate LLM evaluation metrics (faithfulness, relevance, context recall) → part of the production observability stack at ITC Infotech alongside LangSmith and Langfuse.'],
+  ['OpenSearch',        'How did you use OpenSearch?',              'I used OpenSearch hybrid search — combining BM25 keyword search with dense vector retrieval → higher recall and precision for the HR RAG app over 700+ documents at ITC Infotech.'],
+  ['Docling',           'What is Docling used for?',                'I used Docling to parse and chunk complex HR documents (PDFs, Word files) into clean structured text → feeds high-quality input into the OpenSearch index and RAG pipeline.'],
+  ['ServiceNow',        'Tell me about the ServiceNow project.',    'I led multi-agent ServiceNow ITSM automation using MCP + LangGraph → a Master Orchestrator dynamically routes incident, change, and request tasks to specialized agents.'],
+  ['Retail Lens',       'What is Retail Lens?',                     'I built Retail Lens — a visual search tool using SAM for segmentation + CLIP-ViT-B embeddings stored in Qdrant → image-based product discovery by similarity search for a retail client at Accenture.'],
+  ['CLIP-ViT-B',        'What embeddings did Retail Lens use?',     'I used CLIP-ViT-B to generate visual embeddings from product images → stored in Qdrant for fast ANN search. SAM handled object segmentation before embedding, enabling clean similarity matching.'],
+  ['SAM',               'How did you use SAM?',                     'I used SAM (Segment Anything Model) to isolate product objects from background noise before embedding → cleaner CLIP-ViT-B embeddings and higher precision in Retail Lens similarity search.'],
+  ['Qdrant',            'Which vector databases have you used?',    "I've used Qdrant as the primary vector DB for Retail Lens and RAG pipelines — also worked with OpenSearch, Pinecone, and ChromaDB depending on scale and query requirements."],
+  ['GenAI Asthma',      'Tell me about the GenAI Asthma project.',  'I built a GenAI asthma prediction tool using RAG over clinical literature + LLM chat, with Excel/CSV input via Streamlit → deployed for two client demos at Accenture for clinical decision support.'],
+  ['plasma donations',  'Tell me about the plasma donation project.','I built a fee-optimising model for plasma donations — customer segmentation + web scraping to benchmark competitor pricing → identified optimal fee tiers to maximise donor acquisition for a healthcare client.'],
+  ['credit risk',       'Describe your credit risk model.',         'I built credit risk scoring using Bagging & Boosting for new-to-credit and MFI customers at Kaleidofin → monthly risk cycles with automated alerts for high-risk segments.'],
+  ['LightGBM',          'What ML models did you build at Kaleidofin?', 'I used LightGBM + RandomForest + GridSearchCV for payment prediction at Kaleidofin → identified high-risk borrowers early and improved call centre targeting efficiency.'],
+  ['RandomForest',      'What ML models did you use at Kaleidofin?', 'I used RandomForest + LightGBM + GridSearchCV for payment prediction at Kaleidofin → ensemble methods outperformed single models; results prioritised call centre outreach.'],
+  ['Apache Airflow',    'How did you use Apache Airflow?',          'I used Apache Airflow to orchestrate ETL and model retraining pipelines at Kaleidofin → DAG-based scheduling replaced brittle cron jobs and improved pipeline reliability.'],
+  ['GrowthX',           'What is the GrowthX Capstone?',           'I won the GrowthX Capstone among 300 members — presented a ₹250Cr → ₹500Cr revenue strategy for Blue Tokai Coffee directly to the Founder & Co-Founder in 2024.'],
+  ['Blue Tokai',        'Tell me about the Blue Tokai strategy.',   'I designed a growth strategy to double Blue Tokai Coffee revenue from ₹250Cr to ₹500Cr — won the GrowthX Capstone among 300 members, presented live to Founder & Co-Founder.'],
+  ['FICC 2020',         'Tell me about your publications.',         "I published at FICC 2020 in San Francisco — a two-stage ML approach to forecast movie lifetime in a multiplex. Also published at IEEE IS'20 on human stress detection. Both are indexed."],
+  ["IEEE IS'20",        'Tell me about your publications.',         "I have 2 peer-reviewed publications: IEEE IS'20 (Varna, Bulgaria) on user-independent stress detection, and FICC 2020 (San Francisco) on two-stage ML for movie lifetime forecasting."],
+  ['PowerBI',           'What dashboarding tools have you used?',   'I used PowerBI to build field sales dashboards for dengue vaccine impact analysis in Indonesia at Accenture. Also worked with AWS QuickSight, Plotly, Matplotlib, and Seaborn.'],
+  ['Red Hat',           'Tell me about your Red Hat certification.', "I'm Red Hat Certified in OpenShift Administration — validated skills in deploying and managing containerised applications on Kubernetes/OpenShift, used in enterprise ML pipeline deployments at Accenture."],
+  ['Mechatronics',      'Tell me about your education.',           'I did M.E. Mechatronics at Anna University – M.I.T Campus (2018–2020), where my thesis led to an IEEE IS\'20 publication on stress detection. Undergrad was B.E. Mechanical Engineering (2013–2017).'],
+];
+
+function applyHighlights(container) {
+  const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
+    acceptNode: n => n.parentElement.closest('script,style,.hl') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
+  });
+  const hits = [];
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    for (const [term, q, a] of HL_MAP) {
+      if (node.textContent.includes(term)) { hits.push([node, term, q, a]); break; }
+    }
+  }
+  for (const [node, term, q, a] of hits) {
+    const idx = node.textContent.indexOf(term);
+    if (idx === -1) continue;
+    const frag = document.createDocumentFragment();
+    frag.appendChild(document.createTextNode(node.textContent.slice(0, idx)));
+    const span = document.createElement('span');
+    span.className = 'hl';
+    span.textContent = term;
+    span.dataset.q = q;
+    span.dataset.a = a;
+    const tip = document.createElement('span');
+    tip.className = 'hl-tip';
+    tip.textContent = '💬 ' + q;
+    span.appendChild(tip);
+    frag.appendChild(span);
+    frag.appendChild(document.createTextNode(node.textContent.slice(idx + term.length)));
+    node.parentNode.replaceChild(frag, node);
+  }
+}
+
+function now() {
+  return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function sendQuestion(q, a) {
+  const msgs = document.getElementById('chat-msgs');
+  msgs.querySelectorAll('.msg-typing').forEach(t => t.remove());
+
+  const sent = document.createElement('div');
+  sent.className = 'msg-sent';
+  sent.innerHTML = q + '<div class="msg-time">' + now() + ' ✓✓</div>';
+  msgs.appendChild(sent);
+
+  const typing = document.createElement('div');
+  typing.className = 'msg-typing';
+  typing.innerHTML = '<div class="td"></div><div class="td"></div><div class="td"></div>';
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  setTimeout(() => {
+    typing.remove();
+    const recv = document.createElement('div');
+    recv.className = 'msg-recv';
+    recv.innerHTML = a + '<div class="msg-time">' + now() + '</div>';
+    msgs.appendChild(recv);
+    const t2 = document.createElement('div');
+    t2.className = 'msg-typing';
+    t2.innerHTML = '<div class="td"></div><div class="td"></div><div class="td"></div>';
+    msgs.appendChild(t2);
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 1100);
+}
+
+// Init
+applyHighlights(document.getElementById('resume'));
+document.getElementById('resume').addEventListener('click', e => {
+  const el = e.target.closest('.hl');
+  if (el) sendQuestion(el.dataset.q, el.dataset.a);
+});
+</script>
+</body>
+</html>

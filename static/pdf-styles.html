@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Panel — 10 Style Directions</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@300;400;600;700&family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --page-bg: #080810;
+  --card-border: rgba(255,255,255,0.07);
+  --accent: #c8ff57;
+  --muted: #3a3a50;
+  --text: #d8d8e8;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--page-bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* noise grain */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity: 0.6;
+}
+
+/* ─── HERO ─── */
+.hero {
+  padding: 70px 60px 50px;
+  max-width: 1440px; margin: 0 auto;
+  position: relative;
+}
+.hero-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(48px, 7vw, 96px);
+  line-height: 0.92; letter-spacing: -0.02em;
+  color: #f0f0f8; margin-bottom: 18px;
+}
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero-sub { font-size: 15px; color: #5a5a78; max-width: 480px; line-height: 1.6; }
+
+/* ─── LAYOUT PREVIEW (left sidebar stub + right content) ─── */
+.layout-stub {
+  display: flex; gap: 0;
+  background: #0d0d18; border: 1px solid var(--card-border);
+  border-radius: 12px; overflow: hidden;
+  max-width: 260px; height: 60px; margin: 24px 0;
+}
+.stub-left { width: 72px; background: #111120; border-right: 1px solid var(--card-border); display: flex; align-items: center; justify-content: center; }
+.stub-left-inner { width: 36px; height: 36px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #075e54; }
+.stub-right { flex: 1; display: flex; align-items: center; padding: 0 14px; }
+.stub-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #3a3a58; }
+.stub-arrow { margin-left: auto; color: var(--accent); font-size: 18px; }
+
+/* ─── GRID ─── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+  padding: 0 60px 100px;
+  max-width: 1440px; margin: 0 auto;
+}
+
+/* ─── CARD SHELL ─── */
+.card {
+  border-radius: 14px; overflow: hidden;
+  border: 1px solid var(--card-border);
+  background: #0d0d18;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  animation: rise 0.5s ease both;
+  cursor: pointer;
+}
+.card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(200,255,87,0.25);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,255,87,0.08);
+}
+@keyframes rise { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.card:nth-child(1){animation-delay:.04s} .card:nth-child(2){animation-delay:.08s}
+.card:nth-child(3){animation-delay:.12s} .card:nth-child(4){animation-delay:.16s}
+.card:nth-child(5){animation-delay:.20s} .card:nth-child(6){animation-delay:.24s}
+.card:nth-child(7){animation-delay:.28s} .card:nth-child(8){animation-delay:.32s}
+.card:nth-child(9){animation-delay:.36s} .card:nth-child(10){animation-delay:.40s}
+
+.card-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--card-border);
+  background: rgba(255,255,255,0.02);
+}
+.card-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--accent);
+  background: rgba(200,255,87,0.08);
+  border: 1px solid rgba(200,255,87,0.15);
+  padding: 3px 8px; border-radius: 4px;
+}
+.card-name { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; color: #e0e0f0; }
+.card-tech { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #3a3a58; }
+.mockup { height: 300px; overflow: hidden; position: relative; }
+
+
+/* ══════════════════════════════════════
+   1. CLEAN WHITE PAPER
+══════════════════════════════════════ */
+.paper {
+  background: #faf9f7;
+  height: 100%; padding: 20px 22px;
+  font-family: 'Libre Baskerville', serif;
+  overflow: hidden;
+}
+.paper-name { font-size: 18px; font-weight: 700; color: #111; letter-spacing: -0.02em; }
+.paper-role { font-size: 10px; color: #777; margin-bottom: 10px; font-style: italic; }
+.paper-rule { border: none; border-top: 1.5px solid #222; margin: 8px 0 6px; }
+.paper-rule-thin { border: none; border-top: 0.5px solid #ddd; margin: 6px 0; }
+.paper-section { font-size: 8px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #555; margin-bottom: 6px; }
+.paper-co { font-size: 11px; font-weight: 700; color: #111; }
+.paper-period { font-size: 9px; color: #999; float: right; font-family: 'IBM Plex Mono', monospace; }
+.paper-title { font-size: 10px; font-style: italic; color: #555; margin-bottom: 4px; }
+.paper-li { font-size: 9.5px; color: #444; line-height: 1.55; padding-left: 10px; position: relative; margin-bottom: 2px; }
+.paper-li::before { content: '—'; position: absolute; left: 0; color: #bbb; }
+.paper-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.paper-tag { font-size: 8px; border: 0.5px solid #ccc; color: #666; padding: 2px 6px; border-radius: 2px; }
+
+/* ══════════════════════════════════════
+   2. DARK CODE EDITOR
+══════════════════════════════════════ */
+.code-editor {
+  background: #1a1b26;
+  height: 100%;
+  font-family: 'IBM Plex Mono', monospace;
+  padding: 0; overflow: hidden;
+}
+.editor-tabs { display: flex; background: #13141f; border-bottom: 1px solid #2a2b3d; }
+.etab { font-size: 9px; padding: 6px 12px; color: #666; border-right: 1px solid #2a2b3d; }
+.etab.active { background: #1a1b26; color: #c0caf5; border-bottom: 1px solid #1a1b26; margin-bottom: -1px; }
+.editor-body { padding: 10px 6px; height: calc(100% - 28px); overflow: hidden; }
+.eline { display: flex; gap: 8px; font-size: 9.5px; line-height: 1.7; }
+.lnum { color: #3b3c52; width: 18px; text-align: right; flex-shrink: 0; user-select: none; }
+.key { color: #7dcfff; }
+.str { color: #9ece6a; }
+.num { color: #ff9e64; }
+.bool { color: #bb9af7; }
+.punct { color: #565f89; }
+.comment { color: #3b3c52; font-style: italic; }
+.arr { color: #c0caf5; }
+
+/* ══════════════════════════════════════
+   3. GLASSMORPHISM CARD STACK
+══════════════════════════════════════ */
+.glass-stage {
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  height: 100%; padding: 14px 12px;
+  overflow: hidden; position: relative;
+}
+.glass-blob { position: absolute; border-radius: 50%; filter: blur(40px); pointer-events: none; }
+.glass-blob.b1 { width: 120px; height: 120px; background: rgba(126,87,194,0.4); top: -20px; right: -20px; }
+.glass-blob.b2 { width: 80px; height: 80px; background: rgba(32,178,170,0.3); bottom: 20px; left: -10px; }
+.gcard {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
+  border-radius: 12px; padding: 10px 14px;
+  margin-bottom: 8px; position: relative; z-index: 1;
+}
+.gcard-label { font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: rgba(255,255,255,0.35); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+.gcard-title { font-family: 'DM Serif Display', serif; font-size: 13px; color: #fff; margin-bottom: 2px; }
+.gcard-sub { font-size: 9px; color: rgba(255,255,255,0.5); }
+.gcard-chips { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+.gchip { font-size: 8px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); border-radius: 20px; padding: 2px 7px; border: 1px solid rgba(255,255,255,0.1); }
+
+/* ══════════════════════════════════════
+   4. BRUTALIST BOLD
+══════════════════════════════════════ */
+.brute {
+  background: #f5f0e8;
+  height: 100%; padding: 0; overflow: hidden;
+  font-family: 'Oswald', sans-serif;
+}
+.brute-header { background: #111; padding: 12px 14px; }
+.brute-name { font-size: 22px; font-weight: 700; color: #f5f0e8; line-height: 1; letter-spacing: -0.02em; }
+.brute-role { font-size: 9px; color: #666; letter-spacing: 0.2em; text-transform: uppercase; margin-top: 2px; }
+.brute-body { padding: 10px 14px; }
+.brute-section { font-size: 8px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; background: #111; color: #f5f0e8; display: inline-block; padding: 2px 8px; margin-bottom: 8px; margin-top: 6px; }
+.brute-job { border-left: 3px solid #111; padding-left: 10px; margin-bottom: 8px; }
+.brute-co { font-size: 14px; font-weight: 700; color: #111; line-height: 1; }
+.brute-period { font-size: 8px; color: #999; font-family: 'IBM Plex Mono', monospace; }
+.brute-li { font-size: 9px; color: #333; line-height: 1.5; margin-top: 3px; font-family: 'DM Sans', sans-serif; font-weight: 300; }
+.brute-skills { display: flex; flex-wrap: wrap; gap: 0; margin-top: 8px; }
+.bskill { font-size: 9px; font-weight: 600; border: 1.5px solid #111; padding: 2px 7px; margin: -0.75px; color: #111; }
+
+/* ══════════════════════════════════════
+   5. MAGAZINE EDITORIAL
+══════════════════════════════════════ */
+.mag {
+  background: #fff;
+  height: 100%; display: flex; overflow: hidden;
+}
+.mag-sidebar { width: 70px; background: #111; padding: 12px 8px; flex-shrink: 0; display: flex; flex-direction: column; }
+.mag-vert { writing-mode: vertical-rl; transform: rotate(180deg); font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 0.15em; color: #555; }
+.mag-vert-accent { writing-mode: vertical-rl; transform: rotate(180deg); font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 0.1em; color: #c8ff57; margin-top: 8px; }
+.mag-main { flex: 1; padding: 12px 14px; overflow: hidden; }
+.mag-issue { font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: #bbb; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+.mag-headline { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900; color: #111; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 6px; }
+.mag-rule { border: none; border-top: 2px solid #111; margin: 6px 0; }
+.mag-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mag-col-head { font-family: 'Bebas Neue', sans-serif; font-size: 10px; letter-spacing: 0.1em; color: #888; border-bottom: 1px solid #ddd; padding-bottom: 3px; margin-bottom: 4px; }
+.mag-body-text { font-family: 'Libre Baskerville', serif; font-size: 8.5px; color: #444; line-height: 1.6; }
+.mag-pullquote { font-family: 'Playfair Display', serif; font-style: italic; font-size: 10px; color: #111; border-left: 2px solid #111; padding-left: 8px; margin: 6px 0; line-height: 1.4; }
+
+/* ══════════════════════════════════════
+   6. KANBAN BOARD
+══════════════════════════════════════ */
+.kanban {
+  background: #1a1f2e;
+  height: 100%; padding: 12px; overflow: hidden;
+}
+.kanban-header { font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; color: #7b8cde; letter-spacing: 0.05em; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.kanban-header::after { content: ''; flex: 1; height: 1px; background: rgba(123,140,222,0.2); }
+.kanban-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; height: calc(100% - 30px); }
+.kcol { display: flex; flex-direction: column; gap: 6px; }
+.kcol-head { font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: #7b8cde; text-transform: uppercase; letter-spacing: 0.1em; padding: 4px 8px; background: rgba(123,140,222,0.1); border-radius: 4px; text-align: center; }
+.kcard { background: #232a3d; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 8px; }
+.kcard-co { font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; color: #e2e8ff; margin-bottom: 2px; }
+.kcard-role { font-size: 8px; color: #7b8cde; margin-bottom: 4px; }
+.kcard-tag { font-size: 7.5px; background: rgba(123,140,222,0.15); color: #9ba8e8; border-radius: 3px; padding: 1px 5px; display: inline-block; margin: 1px 1px 0 0; }
+.kcard-period { font-family: 'IBM Plex Mono', monospace; font-size: 7px; color: #3a4060; margin-top: 4px; }
+.kcard-active { border-left: 2px solid #c8ff57; }
+
+/* ══════════════════════════════════════
+   7. TIMELINE SCROLL
+══════════════════════════════════════ */
+.timeline {
+  background: #0c0e1a;
+  height: 100%; padding: 16px 14px; overflow: hidden;
+  position: relative;
+}
+.tl-track {
+  position: absolute; left: 50%; top: 0; bottom: 0;
+  width: 1px; background: linear-gradient(to bottom, transparent, #2a2d45 10%, #2a2d45 90%, transparent);
+  transform: translateX(-50%);
+}
+.tl-item { display: flex; align-items: flex-start; gap: 0; margin-bottom: 16px; position: relative; }
+.tl-item:nth-child(odd) { flex-direction: row-reverse; }
+.tl-content { width: calc(50% - 18px); }
+.tl-item:nth-child(odd) .tl-content { text-align: right; }
+.tl-node { width: 36px; flex-shrink: 0; display: flex; justify-content: center; padding-top: 3px; }
+.tl-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid; position: relative; z-index: 1; }
+.tl-dot.present { border-color: #c8ff57; background: rgba(200,255,87,0.2); box-shadow: 0 0 8px rgba(200,255,87,0.4); }
+.tl-dot.past { border-color: #2a2d45; background: #0c0e1a; }
+.tl-co { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; color: #e0e4ff; }
+.tl-role { font-size: 8.5px; color: #4a4f70; margin-bottom: 3px; }
+.tl-yr { font-family: 'IBM Plex Mono', monospace; font-size: 7.5px; color: #c8ff57; }
+.tl-desc { font-size: 8px; color: #4a4f70; line-height: 1.5; margin-top: 2px; }
+
+/* ══════════════════════════════════════
+   8. MINIMAL DOT GRID
+══════════════════════════════════════ */
+.dotgrid {
+  background: #fdfdfc;
+  background-image: radial-gradient(circle, #d0d0d0 1px, transparent 1px);
+  background-size: 18px 18px;
+  height: 100%; padding: 18px 20px; overflow: hidden;
+}
+.dg-name { font-family: 'DM Serif Display', serif; font-size: 17px; color: #111; margin-bottom: 2px; }
+.dg-role { font-size: 10px; color: #999; margin-bottom: 14px; font-family: 'DM Sans', sans-serif; }
+.dg-block { background: rgba(255,255,255,0.85); border-radius: 8px; padding: 8px 10px; margin-bottom: 8px; }
+.dg-section { font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: #bbb; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 5px; }
+.dg-co { font-size: 11px; font-weight: 600; color: #111; font-family: 'DM Sans', sans-serif; }
+.dg-period { font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: #bbb; float: right; }
+.dg-desc { font-size: 9px; color: #666; line-height: 1.55; margin-top: 3px; }
+.dg-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px; }
+.dg-tag { font-size: 7.5px; background: #f0f0f0; color: #666; padding: 1px 6px; border-radius: 3px; font-family: 'IBM Plex Mono', monospace; }
+
+/* ══════════════════════════════════════
+   9. NEON CYBERPUNK
+══════════════════════════════════════ */
+.cyber {
+  background: #020409;
+  height: 100%; padding: 14px; overflow: hidden;
+  position: relative;
+}
+.cyber-grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(0,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,255,0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+}
+.cyber-scan {
+  position: absolute; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, transparent, rgba(0,255,200,0.3), transparent);
+  animation: scan 4s linear infinite; pointer-events: none;
+}
+@keyframes scan { from{top:-2px} to{top:100%} }
+.cyber-name {
+  font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 0.08em;
+  color: #00ffe0; text-shadow: 0 0 20px rgba(0,255,224,0.6), 0 0 40px rgba(0,255,224,0.3);
+  line-height: 1;
+}
+.cyber-role { font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: rgba(0,255,224,0.4); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 10px; }
+.cyber-block { border: 1px solid rgba(0,255,200,0.15); border-radius: 4px; padding: 8px 10px; margin-bottom: 7px; background: rgba(0,255,200,0.02); position: relative; }
+.cyber-block::before { content: ''; position: absolute; top: -1px; left: 10px; width: 40px; height: 1px; background: #00ffe0; box-shadow: 0 0 6px #00ffe0; }
+.cyber-co { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 0.1em; color: #00ffe0; }
+.cyber-period { font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: rgba(0,255,200,0.3); float: right; }
+.cyber-li { font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+.cyber-li::before { content: '> '; color: #00ffe0; }
+.cyber-skills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.cyber-skill { font-family: 'IBM Plex Mono', monospace; font-size: 7.5px; color: #ff2d78; border: 1px solid rgba(255,45,120,0.3); padding: 2px 6px; border-radius: 2px; text-shadow: 0 0 6px rgba(255,45,120,0.5); }
+
+/* ══════════════════════════════════════
+   10. NEWSPAPER BROADSHEET
+══════════════════════════════════════ */
+.news {
+  background: #f2ede3;
+  height: 100%; padding: 10px 12px; overflow: hidden;
+}
+.news-masthead {
+  text-align: center; border-bottom: 2.5px double #111;
+  padding-bottom: 6px; margin-bottom: 8px;
+}
+.news-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 900; color: #111; letter-spacing: -0.01em; }
+.news-tagline { font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 8px; color: #666; }
+.news-date { font-family: 'IBM Plex Mono', monospace; font-size: 7.5px; color: #999; display: flex; justify-content: space-between; margin-top: 3px; }
+.news-cols { display: grid; grid-template-columns: 2fr 1.2fr; gap: 10px; }
+.news-col2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.news-headline { font-family: 'Playfair Display', serif; font-size: 12px; font-weight: 700; color: #111; line-height: 1.2; margin-bottom: 4px; }
+.news-byline { font-family: 'IBM Plex Mono', monospace; font-size: 7px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+.news-body { font-family: 'Libre Baskerville', serif; font-size: 8px; line-height: 1.65; color: #333; }
+.news-rule { border: none; border-top: 1px solid #bbb; margin: 6px 0; }
+.news-small-head { font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 0.08em; color: #111; border-top: 2px solid #111; padding-top: 3px; margin-bottom: 3px; }
+.news-small-body { font-family: 'Libre Baskerville', serif; font-size: 7.5px; line-height: 1.55; color: #444; }
+.news-flag { display: inline-block; background: #111; color: #f2ede3; font-family: 'Bebas Neue', sans-serif; font-size: 8px; letter-spacing: 0.1em; padding: 1px 6px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Resume Panel · Style Directions</div>
+  <h1>10 ways to show<br>the <em>right side</em></h1>
+  <p class="hero-sub">Pick a visual direction for the resume panel. Left chat stays as WhatsApp — right side is your canvas.</p>
+  <div class="layout-stub">
+    <div class="stub-left"><div class="stub-left-inner">R</div></div>
+    <div class="stub-right">
+      <span class="stub-label">← chat fixed &nbsp;|&nbsp; resume panel →</span>
+      <span class="stub-arrow">›</span>
+    </div>
+  </div>
+</div>
+
+<!-- GRID -->
+<div class="grid">
+
+  <!-- 1. CLEAN WHITE PAPER -->
+  <div class="card">
+    <div class="card-meta">
+      <span class="card-num">01</span>
+      <span class="card-name">Clean White Paper</span>
+      <span class="card-tech">Libre Baskerville</span>
+    </div>
+    <div class="mockup">
+      <div class="paper">
+        <div class="paper-name">Ramanathan Murugappan</div>
+        <div class="paper-role">AI/ML Lead Research Engineer · ITC Infotech · Bengaluru</div>
+        <hr class="paper-rule">
+        <div class="paper-section">Experience</div>
+        <div><span class="paper-co">ITC Infotech</span><span class="paper-period">Mar 2025 – Present</span></div>
+        <div style="clear:both"></div>
+        <div class="paper-title">AI/ML Lead Research Engineer (R&D)</div>
+        <div class="paper-li">Architected HR RAG app over 700+ docs using Docling, OpenSearch hybrid search & Agentic RAG.</div>
+        <div class="paper-li">Led multi-agent ServiceNow automation using MCP for dynamic routing.</div>
+        <div class="paper-li">Built LLM observability stack — DeepEval, LangSmith, Langfuse.</div>
+        <hr class="paper-rule-thin">
+        <div><span class="paper-co">Accenture AI-Hub</span><span class="paper-period">Aug 2021 – Mar 2025</span></div>
+        <div style="clear:both"></div>
+        <div class="paper-title">Data Science Analyst (Data & AI)</div>
+        <div class="paper-li">Built Retail Lens — visual search with SAM + CLIP-ViT-B + Qdrant.</div>
+        <div class="paper-li">Developed GenAI Asthma Prediction Tool using RAG & LLM chat.</div>
+        <hr class="paper-rule-thin">
+        <div class="paper-section" style="margin-top:6px">Skills</div>
+        <div class="paper-tags">
+          <span class="paper-tag">LangGraph</span><span class="paper-tag">MCP</span><span class="paper-tag">RAG</span>
+          <span class="paper-tag">OpenSearch</span><span class="paper-tag">Qdrant</span><span class="paper-tag">DeepEval</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. DARK CODE EDITOR -->
+  <div class="card">
+    <div class="card-meta">
+      <span class="card-num">02</span>
+      <span class="card-name">Dark Code Editor</span>
+      <span class="card-tech">IBM Plex Mono</span>
+    </div>
+    <div class="mockup">
+      <div class="code-editor">
+        <div class="editor-tabs">
+          <div class="etab active">resume.json</div>
+          <div class="etab">skills.ts</div>
+          <div class="etab">projects.py</div>
+        </div>
+        <div class="editor-body">
+          <div class="eline"><span class="lnum">1</span><span class="punct">{</span></div>
+          <div class="eline"><span class="lnum">2</span><span class="key">&nbsp;&nbsp;"name"</span><span class="punct">:</span> <span class="str">"Ramanathan Murugappan"</span><span class="punct">,</span></div>
+          <div class="eline"><span class="lnum">3</span><span class="key">&nbsp;&nbsp;"role"</span><span class="punct">:</span> <span class="str">"AI/ML Lead Research Engineer"</span><span class="punct">,</span></div>
+          <div class="eline"><span class="lnum">4</span><span class="key">&nbsp;&nbsp;"company"</span><span class="punct">:</span> <span class="str">"ITC Infotech"</span><span class="punct">,</span></div>
+          <div class="eline"><span class="lnum">5</span><span class="key">&nbsp;&nbsp;"since"</span><span class="punct">:</span> <span class="str">"Mar 2025"</span><span class="punct">,</span></div>
+          <div class="eline"><span class="lnum">6</span><span class="key">&nbsp;&nbsp;"focus"</span><span class="punct">:</span> <span class="arr">[</span></div>
+          <div class="eline"><span class="lnum">7</span><span class="str">&nbsp;&nbsp;&nbsp;&nbsp;"Agentic RAG"</span><span class="punct">,</span></div>
+          <div class="eline"><span class="lnum">8</span><span class="str">&nbsp;&nbsp;&nbsp;&nbsp;"Multi-Agent Systems"</span><span class="punct">,</span></div>
+          <div class="eline"><span class="lnum">9</span><span class="str">&nbsp;&nbsp;&nbsp;&nbsp;"LLM Observability"</span></div>
+          <div class="eline"><span class="lnum">10</span><span class="arr">&nbsp;&nbsp;]</span><span class="punct">,</span></div>
+          <div class="eline"><span class="lnum">11</span><span class="key">&nbsp;&nbsp;"stack"</span><span class="punct">:</span> <span class="arr">[</span><span class="str">"LangGraph"</span><span class="punct">,</span> <span class="str">"MCP"</span><span class="punct">,</span> <span class="str">"OpenSearch"</span><span class="arr">]</span><span class="punct">,</span></div>
+          <div class="eline"><span class="lnum">12</span><span class="key">&nbsp;&nbsp;"docs_indexed"</span><span class="punct">:</span> <span class="num">700</span><span class="punct">,</span></div>
+          <div class="eline"><span class="lnum">13</span><span class="key">&nbsp;&nbsp;"prev_exp"</span><span class="punct">:</span> <span class="arr">[</span></div>
+          <div class="eline"><span class="lnum">14</span><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;// Accenture AI-Hub 2021–2025</span></div>
+          <div class="eline"><span class="lnum">15</span><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;// Retail Lens · GenAI · Fee-Opt</span></div>
+          <div class="eline"><span class="lnum">16</span><span class="arr">&nbsp;&nbsp;]</span><span class="punct">,</span></div>
+          <div class="eline"><span class="lnum">17</span><span class="key">&nbsp;&nbsp;"pubs"</span><span class="punct">:</span> <span class="num">2</span><span class="punct">,</span> <span class="key">"certs"</span><span class="punct">:</span> <span class="num">9</span></div>
+          <div class="eline"><span class="lnum">18</span><span class="punct">}</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. GLASSMORPHISM CARD STACK -->
+  <div class="card">
+    <div class="card-meta">
+      <span class="card-num">03</span>
+      <span class="card-name">Glassmorphism Cards</span>
+      <span class="card-tech">backdrop-filter</span>
+    </div>
+    <div class="mockup">
+      <div class="glass-stage">
+        <div class="glass-blob b1"></div>
+        <div class="glass-blob b2"></div>
+        <div class="gcard">
+          <div class="gcard-label">Current · Mar 2025</div>
+          <div class="gcard-title">ITC Infotech</div>
+          <div class="gcard-sub">AI/ML Lead Research Engineer (R&D)</div>
+          <div class="gcard-chips">
+            <span class="gchip">Agentic RAG</span><span class="gchip">MCP</span><span class="gchip">LangGraph</span><span class="gchip">OpenSearch</span>
+          </div>
+        </div>
+        <div class="gcard">
+          <div class="gcard-label">2021 – 2025</div>
+          <div class="gcard-title">Accenture AI-Hub</div>
+          <div class="gcard-sub">Data Science Analyst (Data & AI)</div>
+          <div class="gcard-chips">
+            <span class="gchip">Retail Lens</span><span class="gchip">SAM + CLIP</span><span class="gchip">Qdrant</span><span class="gchip">RAG</span>
+          </div>
+        </div>
+        <div class="gcard">
+          <div class="gcard-label">2019 – 2021</div>
+          <div class="gcard-title">Kaleidofin</div>
+          <div class="gcard-sub">Data Science Analyst</div>
+          <div class="gcard-chips">
+            <span class="gchip">Credit Risk</span><span class="gchip">LightGBM</span><span class="gchip">Airflow</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. BRUTALIST BOLD -->
+  <div class="card">
+    <div class="card-meta">
+      <span class="card-num">04</span>
+      <span class="card-name">Brutalist Bold</span>
+      <span class="card-tech">Oswald · raw grid</span>
+    </div>
+    <div class="mockup">
+      <div class="brute">
+        <div class="brute-header">
+          <div class="brute-name">RAMANATHAN<br>MURUGAPPAN</div>
+          <div class="brute-role">AI / ML LEAD · ITC INFOTECH · BENGALURU</div>
+        </div>
+        <div class="brute-body">
+          <div class="brute-section">Experience</div>
+          <div class="brute-job">
+            <div class="brute-co">ITC INFOTECH <span class="brute-period">MAR 2025–NOW</span></div>
+            <div class="brute-li">HR RAG over 700+ docs · MCP multi-agent · DeepEval observability</div>
+          </div>
+          <div class="brute-job">
+            <div class="brute-co">ACCENTURE AI-HUB <span class="brute-period">2021–2025</span></div>
+            <div class="brute-li">Retail Lens (SAM + CLIP) · GenAI Asthma Tool · Plasma Fee Model</div>
+          </div>
+          <div class="brute-job">
+            <div class="brute-co">KALEIDOFIN <span class="brute-period">2019–2021</span></div>
+            <div class="brute-li">Credit risk · Payment prediction · Airflow dashboards</div>
+          </div>
+          <div class="brute-section">Stack</div>
+          <div class="brute-skills">
+            <span class="bskill">LANGGRAPH</span><span class="bskill">MCP</span><span class="bskill">QDRANT</span>
+            <span class="bskill">DEEPEVAL</span><span class="bskill">OPENAI</span><span class="bskill">DOCKER</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. MAGAZINE EDITORIAL -->
+  <div class="card">
+    <div class="card-meta">
+      <span class="card-num">05</span>
+      <span class="card-name">Magazine Editorial</span>
+      <span class="card-tech">Playfair · Bebas Neue</span>
+    </div>
+    <div class="mockup">
+      <div class="mag">
+        <div class="mag-sidebar">
+          <div class="mag-vert">RESUME</div>
+          <div class="mag-vert-accent">2026</div>
+        </div>
+        <div class="mag-main">
+          <div class="mag-issue">Profile · Issue 01 · Bengaluru</div>
+          <div class="mag-headline">From ML Models to<br>Agentic AI Systems</div>
+          <hr class="mag-rule">
+          <div class="mag-cols">
+            <div>
+              <div class="mag-col-head">Current Role</div>
+              <div class="mag-body-text">
+                At ITC Infotech, leading R&D in production-grade RAG systems — 700+ document HR knowledge base with hybrid OpenSearch retrieval and full LLM observability via DeepEval and LangSmith.
+              </div>
+              <div class="mag-pullquote">"Multi-agent orchestration using MCP for dynamic ServiceNow routing"</div>
+            </div>
+            <div>
+              <div class="mag-col-head">Accenture</div>
+              <div class="mag-body-text">Retail Lens visual search · GenAI asthma tool · Fee-optimising model · Google marketing DB · 3.5 years of AI/ML delivery</div>
+              <hr class="mag-rule">
+              <div class="mag-col-head">Education</div>
+              <div class="mag-body-text">M.E. Mechatronics · B.E. Mech Eng · Anna University · 2 IEEE publications</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. KANBAN BOARD -->
+  <div class="card">
+    <div class="card-meta">
+      <span class="card-num">06</span>
+      <span class="card-name">Kanban Board</span>
+      <span class="card-tech">Syne · columns</span>
+    </div>
+    <div class="mockup">
+      <div class="kanban">
+        <div class="kanban-header">Career Board</div>
+        <div class="kanban-cols">
+          <div class="kcol">
+            <div class="kcol-head">Current</div>
+            <div class="kcard kcard-active">
+              <div class="kcard-co">ITC Infotech</div>
+              <div class="kcard-role">AI/ML Lead R&D</div>
+              <div><span class="kcard-tag">Agentic RAG</span><span class="kcard-tag">MCP</span></div>
+              <div><span class="kcard-tag">LangGraph</span><span class="kcard-tag">700+ docs</span></div>
+              <div class="kcard-period">Mar 2025 → now</div>
+            </div>
+          </div>
+          <div class="kcol">
+            <div class="kcol-head">Done</div>
+            <div class="kcard">
+              <div class="kcard-co">Accenture</div>
+              <div class="kcard-role">DS Analyst AI</div>
+              <div><span class="kcard-tag">Retail Lens</span><span class="kcard-tag">SAM+CLIP</span></div>
+              <div><span class="kcard-tag">GenAI Tool</span></div>
+              <div class="kcard-period">2021 → 2025</div>
+            </div>
+            <div class="kcard">
+              <div class="kcard-co">Kaleidofin</div>
+              <div class="kcard-role">DS Analyst</div>
+              <div><span class="kcard-tag">Credit Risk</span><span class="kcard-tag">LightGBM</span></div>
+              <div class="kcard-period">2019 → 2021</div>
+            </div>
+          </div>
+          <div class="kcol">
+            <div class="kcol-head">Research</div>
+            <div class="kcard">
+              <div class="kcard-co">FICC 2020</div>
+              <div class="kcard-role">San Francisco</div>
+              <div><span class="kcard-tag">ML Paper</span></div>
+              <div class="kcard-period">Published</div>
+            </div>
+            <div class="kcard">
+              <div class="kcard-co">IEEE IS'20</div>
+              <div class="kcard-role">Varna, Bulgaria</div>
+              <div><span class="kcard-tag">Stress AI</span></div>
+              <div class="kcard-period">Published</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. TIMELINE SCROLL -->
+  <div class="card">
+    <div class="card-meta">
+      <span class="card-num">07</span>
+      <span class="card-name">Timeline Scroll</span>
+      <span class="card-tech">centered nodes</span>
+    </div>
+    <div class="mockup">
+      <div class="timeline">
+        <div class="tl-track"></div>
+        <div class="tl-item">
+          <div class="tl-content">
+            <div class="tl-co">ITC Infotech</div>
+            <div class="tl-role">AI/ML Lead R&D</div>
+            <div class="tl-yr">Mar 2025 → Present</div>
+            <div class="tl-desc">HR RAG · 700+ docs · MCP multi-agent</div>
+          </div>
+          <div class="tl-node"><div class="tl-dot present"></div></div>
+          <div class="tl-content"></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-content"></div>
+          <div class="tl-node"><div class="tl-dot past"></div></div>
+          <div class="tl-content">
+            <div class="tl-co">Accenture AI-Hub</div>
+            <div class="tl-role">Data Science Analyst</div>
+            <div class="tl-yr">2021 → 2025</div>
+            <div class="tl-desc">Retail Lens · GenAI · Qdrant</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-content">
+            <div class="tl-co">Kaleidofin</div>
+            <div class="tl-role">Data Science Analyst</div>
+            <div class="tl-yr">2019 → 2021</div>
+            <div class="tl-desc">Credit risk · LightGBM · Airflow</div>
+          </div>
+          <div class="tl-node"><div class="tl-dot past"></div></div>
+          <div class="tl-content"></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-content"></div>
+          <div class="tl-node"><div class="tl-dot past"></div></div>
+          <div class="tl-content">
+            <div class="tl-co">Anna University</div>
+            <div class="tl-role">M.E. Mechatronics</div>
+            <div class="tl-yr">2018 → 2020</div>
+            <div class="tl-desc">2 IEEE / FICC publications</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. MINIMAL DOT GRID -->
+  <div class="card">
+    <div class="card-meta">
+      <span class="card-num">08</span>
+      <span class="card-name">Minimal Dot Grid</span>
+      <span class="card-tech">DM Serif · Notion-style</span>
+    </div>
+    <div class="mockup">
+      <div class="dotgrid">
+        <div class="dg-name">Ramanathan Murugappan</div>
+        <div class="dg-role">AI/ML Lead Research Engineer · 6+ years</div>
+        <div class="dg-block">
+          <div class="dg-section">Current</div>
+          <div class="dg-co">ITC Infotech <span class="dg-period">Mar 2025–now</span></div>
+          <div style="clear:both"></div>
+          <div class="dg-desc">HR RAG over 700+ docs · MCP multi-agent · LangSmith observability</div>
+          <div class="dg-tags"><span class="dg-tag">LangGraph</span><span class="dg-tag">OpenSearch</span><span class="dg-tag">DeepEval</span></div>
+        </div>
+        <div class="dg-block">
+          <div class="dg-section">Previous</div>
+          <div class="dg-co">Accenture AI-Hub <span class="dg-period">2021–25</span></div>
+          <div style="clear:both"></div>
+          <div class="dg-desc">Retail Lens · GenAI asthma tool · Google marketing DB</div>
+          <div class="dg-tags"><span class="dg-tag">SAM</span><span class="dg-tag">CLIP-ViT</span><span class="dg-tag">Qdrant</span></div>
+        </div>
+        <div class="dg-block">
+          <div class="dg-section">Publications</div>
+          <div class="dg-desc">IEEE IS'20 · FICC 2020 San Francisco · 9 certifications</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. NEON CYBERPUNK -->
+  <div class="card">
+    <div class="card-meta">
+      <span class="card-num">09</span>
+      <span class="card-name">Neon Cyberpunk</span>
+      <span class="card-tech">Bebas Neue · glow</span>
+    </div>
+    <div class="mockup">
+      <div class="cyber">
+        <div class="cyber-grid"></div>
+        <div class="cyber-scan"></div>
+        <div class="cyber-name">RAMANATHAN<br>MURUGAPPAN</div>
+        <div class="cyber-role">AI_ML_LEAD :: ITC_INFOTECH :: BLR.IN</div>
+        <div class="cyber-block">
+          <div class="cyber-co">ITC_INFOTECH <span class="cyber-period">2025.03→NOW</span></div>
+          <div style="clear:both"></div>
+          <div class="cyber-li">HR RAG over 700+ documents · OpenSearch hybrid</div>
+          <div class="cyber-li">MCP multi-agent · ServiceNow automation</div>
+          <div class="cyber-li">DeepEval + LangSmith observability stack</div>
+        </div>
+        <div class="cyber-block">
+          <div class="cyber-co">ACCENTURE <span class="cyber-period">2021→2025</span></div>
+          <div style="clear:both"></div>
+          <div class="cyber-li">Retail Lens: SAM + CLIP-ViT + Qdrant</div>
+          <div class="cyber-li">GenAI asthma tool · plasma fee model</div>
+        </div>
+        <div class="cyber-skills">
+          <span class="cyber-skill">LANGGRAPH</span><span class="cyber-skill">MCP</span>
+          <span class="cyber-skill">QDRANT</span><span class="cyber-skill">DEEPEVAL</span>
+          <span class="cyber-skill">DOCKER</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. NEWSPAPER BROADSHEET -->
+  <div class="card">
+    <div class="card-meta">
+      <span class="card-num">10</span>
+      <span class="card-name">Newspaper Broadsheet</span>
+      <span class="card-tech">Playfair · multi-col</span>
+    </div>
+    <div class="mockup">
+      <div class="news">
+        <div class="news-masthead">
+          <div class="news-title">THE ENGINEER'S RECORD</div>
+          <div class="news-tagline">All the talent that's fit to print</div>
+          <div class="news-date"><span>BENGALURU EDITION</span><span>VOL. 6 · 2026</span></div>
+        </div>
+        <div class="news-cols">
+          <div>
+            <div class="news-flag">LEAD STORY</div>
+            <div class="news-headline">Engineer Leads AI R&D at ITC Infotech, Builds 700-Doc RAG System</div>
+            <div class="news-byline">Staff Reporter · Mar 2025</div>
+            <div class="news-body">
+              Ramanathan Murugappan, appointed AI/ML Lead at ITC Infotech's R&D division, has architected a landmark RAG application processing over 700 HR documents using Docling and OpenSearch hybrid search. He also oversees a multi-agent ServiceNow automation system powered by MCP protocol.
+            </div>
+            <hr class="news-rule">
+            <div class="news-body">
+              Previously at Accenture AI-Hub (2021–25), he shipped Retail Lens — a visual search product using SAM and CLIP-ViT-B — and a GenAI asthma prediction tool with RAG-powered LLM chat.
+            </div>
+          </div>
+          <div>
+            <div class="news-small-head">KALEIDOFIN</div>
+            <div class="news-small-body">Credit risk & payment prediction models — Bagging, Boosting, LightGBM · 2019–2021</div>
+            <hr class="news-rule">
+            <div class="news-small-head">GROWTHX WIN</div>
+            <div class="news-small-body">Won capstone among 300 — ₹250Cr→₹500Cr revenue strategy for Blue Tokai Coffee</div>
+            <hr class="news-rule">
+            <div class="news-small-head">PUBLICATIONS</div>
+            <div class="news-small-body">FICC 2020 San Francisco · IEEE IS'20 Varna, Bulgaria</div>
+            <hr class="news-rule">
+            <div class="news-small-head">SKILLS</div>
+            <div class="news-small-body">LangGraph · MCP · Qdrant · OpenSearch · DeepEval · Docker · AWS · React</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

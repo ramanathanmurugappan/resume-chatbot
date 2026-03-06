@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Chatbot — UI Style Showcase</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: #1e1e2e;
+    --accent: #e4ff47;
+    --accent2: #ff6b47;
+    --text: #e8e8f0;
+    --muted: #5a5a7a;
+    --card-bg: #13131c;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  /* ── HEADER ── */
+  .hero {
+    position: relative; z-index: 1;
+    padding: 80px 60px 60px;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); background: rgba(228,255,71,0.08);
+    border: 1px solid rgba(228,255,71,0.2);
+    padding: 6px 14px; border-radius: 20px; margin-bottom: 24px;
+  }
+  .hero-tag::before { content: '▸'; }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(42px, 6vw, 80px);
+    font-weight: 800; line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+  }
+  h1 em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 16px; color: var(--muted); max-width: 500px;
+    line-height: 1.6; margin-bottom: 16px;
+  }
+  .hero-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--muted);
+  }
+  .hero-count span { color: var(--accent); }
+
+  /* ── GRID ── */
+  .grid {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 24px;
+    padding: 0 60px 100px;
+    max-width: 1400px; margin: 0 auto;
+  }
+
+  /* ── CARD WRAPPER ── */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(228,255,71,0.3);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(228,255,71,0.1);
+  }
+  .card-label {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+  .card-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--accent);
+    background: rgba(228,255,71,0.1);
+    padding: 3px 8px; border-radius: 4px;
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .card-tag {
+    font-size: 10px; color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .mockup {
+    height: 280px; overflow: hidden;
+    position: relative;
+  }
+
+  /* ════════════════════════════════════
+     STYLE 1 — TERMINAL / HACKER
+  ════════════════════════════════════ */
+  .terminal {
+    background: #000;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 14px 16px;
+    height: 100%; overflow: hidden;
+  }
+  .term-bar {
+    display: flex; gap: 6px; align-items: center; margin-bottom: 14px;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+  .term-title { font-size: 10px; color: #555; margin-left: auto; }
+  .term-line { font-size: 11px; line-height: 1.7; }
+  .term-line.prompt { color: #00ff41; }
+  .term-line.prompt::before { content: '❯ '; color: #00ff41; }
+  .term-line.output { color: #aaa; padding-left: 14px; }
+  .term-line.dim { color: #444; padding-left: 14px; }
+  .term-cursor { display: inline-block; width: 7px; height: 13px; background: #00ff41; animation: blink 1s infinite; vertical-align: middle; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ════════════════════════════════════
+     STYLE 2 — VS CODE
+  ════════════════════════════════════ */
+  .vscode { background: #1e1e1e; display: flex; height: 100%; }
+  .vs-sidebar {
+    width: 140px; background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 8px 0; flex-shrink: 0;
+  }
+  .vs-section { font-size: 9px; color: #bbb; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 12px 4px; }
+  .vs-file {
+    display: flex; align-items: center; gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: #ccc;
+    padding: 3px 12px; cursor: pointer;
+  }
+  .vs-file:hover { background: #2a2d2e; }
+  .vs-file.active { background: #094771; color: #fff; }
+  .vs-file-icon { font-size: 9px; opacity: 0.7; }
+  .vs-chat { flex: 1; display: flex; flex-direction: column; padding: 10px; gap: 8px; overflow: hidden; }
+  .vs-header { font-size: 10px; color: #569cd6; font-family: 'JetBrains Mono', monospace; border-bottom: 1px solid #3c3c3c; padding-bottom: 6px; margin-bottom: 2px; }
+  .vs-bubble { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; line-height: 1.5; }
+  .vs-bubble.user { color: #9cdcfe; }
+  .vs-bubble.user::before { content: '// USER: '; color: #6a9955; }
+  .vs-bubble.bot::before { content: '// RAM: '; color: #c586c0; }
+  .vs-bubble.bot { color: #d4d4d4; }
+  .vs-input { margin-top: auto; background: #3c3c3c; border: 1px solid #555; border-radius: 3px; padding: 5px 8px; font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #d4d4d4; display: flex; align-items: center; gap: 6px; }
+  .vs-input-text { color: #888; }
+  .vs-cursor { display: inline-block; width: 5px; height: 10px; background: #aeafad; animation: blink 1s infinite; }
+
+  /* ════════════════════════════════════
+     STYLE 3 — NOTION CLEAN
+  ════════════════════════════════════ */
+  .notion { background: #fff; padding: 18px 20px; height: 100%; overflow: hidden; }
+  .notion-icon { font-size: 24px; margin-bottom: 4px; }
+  .notion-title { font-family: 'Instrument Serif', serif; font-size: 18px; font-weight: 400; color: #1a1a1a; margin-bottom: 4px; }
+  .notion-sub { font-size: 10px; color: #9b9b9b; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #e9e9e9; }
+  .notion-msg { margin-bottom: 10px; }
+  .notion-label { font-size: 9px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #b0b0b0; margin-bottom: 3px; }
+  .notion-text { font-size: 11px; line-height: 1.6; color: #374151; background: #f9f9f9; border-radius: 6px; padding: 7px 10px; border-left: 2px solid #e5e5e5; }
+  .notion-text.user-msg { background: #f0f4ff; border-left-color: #6366f1; color: #312e81; }
+  .notion-input { margin-top: 10px; border: 1px solid #e5e5e5; border-radius: 6px; padding: 7px 10px; font-size: 10px; color: #9b9b9b; display: flex; justify-content: space-between; }
+  .notion-send { font-size: 14px; }
+
+  /* ════════════════════════════════════
+     STYLE 4 — 3D FLOATING CARD
+  ════════════════════════════════════ */
+  .three-d {
+    background: radial-gradient(ellipse at 30% 40%, #1a0533 0%, #070712 60%);
+    height: 100%; display: flex; align-items: center; justify-content: center;
+    perspective: 600px; padding: 20px;
+  }
+  .card-3d {
+    width: 100%; max-width: 280px;
+    transform: rotateX(8deg) rotateY(-12deg);
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+    animation: float3d 4s ease-in-out infinite;
+  }
+  @keyframes float3d {
+    0%,100% { transform: rotateX(8deg) rotateY(-12deg) translateY(0); }
+    50% { transform: rotateX(6deg) rotateY(-10deg) translateY(-8px); }
+  }
+  .card-3d:hover { transform: rotateX(2deg) rotateY(-4deg) translateY(-4px); }
+  .card-front {
+    background: linear-gradient(135deg, rgba(139,92,246,0.3), rgba(59,130,246,0.2));
+    border: 1px solid rgba(139,92,246,0.5);
+    border-radius: 16px; padding: 16px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 60px rgba(139,92,246,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .three-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #fff;
+    margin-bottom: 10px;
+  }
+  .three-name { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: #fff; }
+  .three-role { font-size: 9px; color: rgba(255,255,255,0.5); margin-bottom: 12px; }
+  .three-msg { font-size: 10px; line-height: 1.5; color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.08); border-radius: 8px; padding: 8px; margin-bottom: 6px; }
+  .three-msg.user { background: rgba(139,92,246,0.25); color: #c4b5fd; margin-left: 20px; }
+  .three-glow { position: absolute; width: 100px; height: 100px; background: rgba(139,92,246,0.3); border-radius: 50%; filter: blur(40px); top: 20px; right: 20px; pointer-events: none; }
+
+  /* ════════════════════════════════════
+     STYLE 5 — MOBILE / WHATSAPP
+  ════════════════════════════════════ */
+  .mobile-wrap { background: #1a1a2e; height: 100%; display: flex; align-items: center; justify-content: center; }
+  .phone {
+    width: 160px; height: 260px;
+    background: #fff; border-radius: 22px;
+    border: 5px solid #333;
+    overflow: hidden; display: flex; flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1);
+  }
+  .phone-status { background: #075e54; padding: 6px 10px 5px; display: flex; align-items: center; gap: 6px; }
+  .phone-back { color: rgba(255,255,255,0.8); font-size: 10px; }
+  .phone-avatar { width: 20px; height: 20px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #075e54; }
+  .phone-name { font-size: 10px; color: #fff; font-weight: 600; flex: 1; }
+  .phone-body { flex: 1; background: #e5ddd5; background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9b99a' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); padding: 6px; display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
+  .wa-msg { font-size: 9px; line-height: 1.4; border-radius: 7px; padding: 5px 7px; max-width: 85%; position: relative; }
+  .wa-msg.recv { background: #fff; align-self: flex-start; border-top-left-radius: 2px; }
+  .wa-msg.sent { background: #dcf8c6; align-self: flex-end; border-top-right-radius: 2px; }
+  .wa-time { font-size: 7px; color: #999; margin-top: 1px; text-align: right; }
+  .phone-input { background: #f0f0f0; padding: 4px 6px; display: flex; align-items: center; gap: 4px; }
+  .phone-inp { flex: 1; background: #fff; border-radius: 20px; padding: 4px 7px; font-size: 8px; color: #888; }
+  .phone-mic { width: 20px; height: 20px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; flex-shrink: 0; }
+
+  /* ════════════════════════════════════
+     STYLE 6 — GLASSMORPHISM
+  ════════════════════════════════════ */
+  .glass-bg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 30%, #f093fb 60%, #4facfe 100%);
+    height: 100%; position: relative; overflow: hidden; padding: 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .glass-orb { position: absolute; border-radius: 50%; filter: blur(30px); opacity: 0.6; }
+  .glass-orb.o1 { width: 80px; height: 80px; background: #ff6b6b; top: -10px; left: -10px; }
+  .glass-orb.o2 { width: 100px; height: 100px; background: #4facfe; bottom: -20px; right: -20px; }
+  .glass-orb.o3 { width: 60px; height: 60px; background: #f093fb; top: 50%; left: 20%; }
+  .glass-panel {
+    width: 100%; max-width: 280px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px; padding: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    position: relative; z-index: 1;
+  }
+  .glass-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .glass-avatar { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; border: 1px solid rgba(255,255,255,0.5); }
+  .glass-name { font-size: 11px; font-weight: 700; color: #fff; }
+  .glass-status { font-size: 8px; color: rgba(255,255,255,0.7); }
+  .glass-msg { font-size: 9.5px; line-height: 1.5; margin-bottom: 6px; border-radius: 10px; padding: 7px 10px; }
+  .glass-msg.bot { background: rgba(255,255,255,0.2); color: #fff; }
+  .glass-msg.user { background: rgba(255,255,255,0.35); color: #1a1a2e; margin-left: 20px; text-align: right; }
+  .glass-input { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 7px 12px; font-size: 9px; color: rgba(255,255,255,0.7); display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+  .glass-send { background: rgba(255,255,255,0.9); color: #764ba2; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; }
+
+  /* ════════════════════════════════════
+     STYLE 7 — TIMELINE + CHAT
+  ════════════════════════════════════ */
+  .timeline-wrap { background: #0f1117; display: flex; height: 100%; overflow: hidden; }
+  .timeline-side {
+    width: 110px; border-right: 1px solid #1e2028;
+    padding: 14px 12px; flex-shrink: 0;
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .tl-item { display: flex; gap: 8px; align-items: flex-start; position: relative; padding-bottom: 16px; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-item::before { content: ''; position: absolute; left: 7px; top: 16px; bottom: 0; width: 1px; background: linear-gradient(to bottom, #334155, transparent); }
+  .tl-item:last-child::before { display: none; }
+  .tl-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; border: 2px solid; display: flex; align-items: center; justify-content: center; font-size: 6px; margin-top: 1px; }
+  .tl-dot.active { border-color: #e4ff47; background: rgba(228,255,71,0.2); color: #e4ff47; }
+  .tl-dot.done { border-color: #334155; background: #1e2028; color: #475569; }
+  .tl-info { flex: 1; }
+  .tl-co { font-size: 8px; font-weight: 700; color: #e2e8f0; line-height: 1.2; }
+  .tl-yr { font-family: 'JetBrains Mono', monospace; font-size: 7px; color: #475569; }
+  .timeline-chat { flex: 1; display: flex; flex-direction: column; padding: 12px; gap: 8px; overflow: hidden; }
+  .tl-chat-title { font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; color: #94a3b8; border-bottom: 1px solid #1e2028; padding-bottom: 6px; margin-bottom: 2px; }
+  .tl-msg { font-size: 9.5px; line-height: 1.5; border-radius: 8px; padding: 7px 9px; }
+  .tl-msg.bot { background: #1e2028; color: #94a3b8; border-left: 2px solid #e4ff47; }
+  .tl-msg.user { background: rgba(228,255,71,0.1); color: #e4ff47; margin-left: 16px; border-right: 2px solid #e4ff47; }
+  .tl-input { margin-top: auto; background: #1e2028; border-radius: 6px; padding: 6px 10px; font-size: 9px; color: #475569; display: flex; justify-content: space-between; }
+
+  /* ════════════════════════════════════
+     STYLE 8 — SHADCN DARK DASHBOARD
+  ════════════════════════════════════ */
+  .dash { background: #09090b; height: 100%; display: flex; flex-direction: column; padding: 14px; gap: 10px; overflow: hidden; }
+  .dash-top { display: flex; gap: 8px; }
+  .dash-card {
+    flex: 1; background: #18181b; border: 1px solid #27272a;
+    border-radius: 8px; padding: 8px 10px;
+  }
+  .dash-card-label { font-size: 8px; color: #71717a; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3px; }
+  .dash-card-val { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; color: #fafafa; }
+  .dash-card-sub { font-size: 8px; color: #52525b; margin-top: 1px; }
+  .dash-badges { display: flex; gap: 4px; flex-wrap: wrap; }
+  .badge { font-size: 8px; padding: 2px 7px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; }
+  .badge.green { background: rgba(34,197,94,0.1); color: #22c55e; border: 1px solid rgba(34,197,94,0.2); }
+  .badge.blue { background: rgba(59,130,246,0.1); color: #3b82f6; border: 1px solid rgba(59,130,246,0.2); }
+  .badge.orange { background: rgba(249,115,22,0.1); color: #f97316; border: 1px solid rgba(249,115,22,0.2); }
+  .dash-chat { flex: 1; background: #18181b; border: 1px solid #27272a; border-radius: 8px; padding: 10px; overflow: hidden; display: flex; flex-direction: column; gap: 7px; }
+  .dash-msg { font-size: 9.5px; line-height: 1.5; border-radius: 6px; padding: 6px 9px; }
+  .dash-msg.bot { background: #27272a; color: #a1a1aa; }
+  .dash-msg.user { background: rgba(250,250,250,0.08); color: #fafafa; margin-left: 20px; }
+  .dash-input { background: #27272a; border: 1px solid #3f3f46; border-radius: 6px; padding: 6px 10px; font-size: 9px; color: #52525b; display: flex; justify-content: space-between; align-items: center; }
+  .dash-send-btn { background: #fafafa; color: #09090b; border-radius: 4px; padding: 3px 7px; font-size: 8px; font-weight: 700; }
+
+  /* ════════════════════════════════════
+     STYLE 9 — VOICE UI
+  ════════════════════════════════════ */
+  .voice-bg {
+    background: #050508;
+    height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; padding: 14px; position: relative; overflow: hidden;
+  }
+  .voice-rings { position: relative; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; }
+  .voice-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(228,255,71,0.2);
+    animation: ripple 2s ease-out infinite;
+  }
+  .voice-ring:nth-child(1) { width: 80px; height: 80px; animation-delay: 0s; }
+  .voice-ring:nth-child(2) { width: 100px; height: 100px; animation-delay: 0.4s; }
+  .voice-ring:nth-child(3) { width: 120px; height: 120px; animation-delay: 0.8s; }
+  @keyframes ripple {
+    0% { opacity: 0.6; transform: scale(0.8); }
+    100% { opacity: 0; transform: scale(1.4); }
+  }
+  .voice-btn {
+    position: relative; z-index: 2;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--accent); border: none;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; cursor: pointer;
+    box-shadow: 0 0 30px rgba(228,255,71,0.4);
+    animation: pulse-btn 2s ease-in-out infinite;
+  }
+  @keyframes pulse-btn { 0%,100% { box-shadow: 0 0 20px rgba(228,255,71,0.3); } 50% { box-shadow: 0 0 40px rgba(228,255,71,0.6); } }
+  .voice-wave { display: flex; gap: 3px; align-items: center; height: 24px; }
+  .voice-bar { width: 3px; border-radius: 2px; background: var(--accent); opacity: 0.7; }
+  .voice-bar:nth-child(1) { height: 6px; animation: wave 1s ease-in-out infinite 0s; }
+  .voice-bar:nth-child(2) { height: 14px; animation: wave 1s ease-in-out infinite 0.1s; }
+  .voice-bar:nth-child(3) { height: 20px; animation: wave 1s ease-in-out infinite 0.2s; }
+  .voice-bar:nth-child(4) { height: 10px; animation: wave 1s ease-in-out infinite 0.3s; }
+  .voice-bar:nth-child(5) { height: 18px; animation: wave 1s ease-in-out infinite 0.4s; }
+  .voice-bar:nth-child(6) { height: 8px; animation: wave 1s ease-in-out infinite 0.5s; }
+  .voice-bar:nth-child(7) { height: 14px; animation: wave 1s ease-in-out infinite 0.6s; }
+  @keyframes wave { 0%,100% { transform: scaleY(0.5); } 50% { transform: scaleY(1); } }
+  .voice-label { font-family: 'Syne', sans-serif; font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; text-transform: uppercase; }
+  .voice-transcript { background: rgba(228,255,71,0.06); border: 1px solid rgba(228,255,71,0.1); border-radius: 8px; padding: 8px 12px; font-size: 10px; color: rgba(255,255,255,0.6); width: 100%; text-align: center; font-style: italic; }
+  .voice-answer { font-size: 10px; line-height: 1.6; color: rgba(255,255,255,0.5); text-align: center; max-width: 240px; }
+
+  /* ════════════════════════════════════
+     STYLE 10 — PDF HOVER TOOLTIPS
+  ════════════════════════════════════ */
+  .pdf-wrap { background: #f5f5f0; height: 100%; display: flex; gap: 0; }
+  .pdf-doc { flex: 1; padding: 14px; overflow: hidden; }
+  .pdf-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .pdf-name { font-family: 'Instrument Serif', serif; font-size: 13px; color: #1a1a1a; font-weight: 600; }
+  .pdf-role { font-size: 9px; color: #666; }
+  .pdf-section { margin-bottom: 8px; }
+  .pdf-sec-title { font-size: 8px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #999; margin-bottom: 4px; border-bottom: 1px solid #ddd; padding-bottom: 2px; }
+  .pdf-text { font-size: 9px; line-height: 1.6; color: #444; }
+  .pdf-highlight {
+    background: rgba(99,102,241,0.15); border-bottom: 1.5px solid #6366f1;
+    cursor: pointer; border-radius: 2px; padding: 0 1px;
+    position: relative; display: inline-block;
+    transition: background 0.2s;
+  }
+  .pdf-highlight:hover { background: rgba(99,102,241,0.25); }
+  .pdf-tooltip {
+    position: absolute; bottom: 110%; left: 0;
+    background: #1e293b; color: #e2e8f0;
+    border-radius: 8px; padding: 8px 10px;
+    font-size: 9px; line-height: 1.5;
+    width: 160px; z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    border: 1px solid rgba(99,102,241,0.3);
+    pointer-events: none;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .pdf-highlight:hover .pdf-tooltip { opacity: 1; }
+  .pdf-tooltip::after { content: ''; position: absolute; top: 100%; left: 12px; border: 5px solid transparent; border-top-color: #1e293b; }
+  .pdf-tooltip-head { font-weight: 700; color: #818cf8; margin-bottom: 3px; }
+  .pdf-chat-float {
+    width: 100px; background: #fff; border-left: 1px solid #e5e5e5;
+    padding: 10px 8px; display: flex; flex-direction: column; gap: 6px; overflow: hidden;
+  }
+  .pdf-chat-title { font-size: 8px; font-weight: 700; color: #6366f1; text-align: center; margin-bottom: 2px; }
+  .pdf-cmsg { font-size: 8px; line-height: 1.4; border-radius: 6px; padding: 4px 6px; }
+  .pdf-cmsg.bot { background: #f1f5f9; color: #475569; }
+  .pdf-cmsg.user { background: #eef2ff; color: #3730a3; text-align: right; }
+
+  /* ── BOTTOM CTA ── */
+  .cta {
+    position: relative; z-index: 1;
+    text-align: center; padding: 40px 60px 80px;
+  }
+  .cta p { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+  .cta-chips { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; padding: 8px 18px; border-radius: 20px;
+    border: 1px solid var(--border); color: var(--muted);
+    cursor: pointer; transition: all 0.2s;
+    background: transparent;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--accent); background: rgba(228,255,71,0.06); }
+  .chip.hot { border-color: rgba(228,255,71,0.4); color: var(--accent); background: rgba(228,255,71,0.08); }
+
+  /* ── STAGGER ANIMATION ── */
+  .card { animation: fadeUp 0.5s ease both; }
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.10s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.20s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.30s; }
+  .card:nth-child(7) { animation-delay: 0.35s; }
+  .card:nth-child(8) { animation-delay: 0.40s; }
+  .card:nth-child(9) { animation-delay: 0.45s; }
+  .card:nth-child(10){ animation-delay: 0.50s; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-tag">Resume Chatbot — UI Showcase</div>
+  <h1>10 ways to<br>present <em>your</em> story</h1>
+  <p class="hero-sub">Visual previews of every style direction for Ramanathan's resume chatbot. Pick one and it gets built.</p>
+  <div class="hero-count">Showing <span>10</span> style concepts · <span>1</span> chatbot</div>
+</div>
+
+<!-- ── GRID ── -->
+<div class="grid">
+
+  <!-- 1. TERMINAL -->
+  <div class="card">
+    <div class="card-label">
+      <span class="card-num">01</span>
+      <span class="card-title">Terminal / Hacker</span>
+      <span class="card-tag">xterm.js</span>
+    </div>
+    <div class="mockup">
+      <div class="terminal">
+        <div class="term-bar">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+          <div class="term-title">ram@resume — zsh</div>
+        </div>
+        <div class="term-line prompt">whoami</div>
+        <div class="term-line output">Ramanathan Murugappan</div>
+        <div class="term-line dim">AI/ML Lead Research Engineer · ITC Infotech</div>
+        <br>
+        <div class="term-line prompt">ask "What's your current role?"</div>
+        <div class="term-line output">→ I lead R&D at ITC Infotech, architecting</div>
+        <div class="term-line output">  production RAG systems over 700+ docs,</div>
+        <div class="term-line output">  multi-agent MCP pipelines & LLM observability</div>
+        <div class="term-line output">  using DeepEval + LangSmith.</div>
+        <br>
+        <div class="term-line prompt">ask "Top skills?"<span class="term-cursor"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. VS CODE -->
+  <div class="card">
+    <div class="card-label">
+      <span class="card-num">02</span>
+      <span class="card-title">VS Code Sidebar</span>
+      <span class="card-tag">webview-ui-toolkit</span>
+    </div>
+    <div class="mockup">
+      <div class="vscode">
+        <div class="vs-sidebar">
+          <div class="vs-section">Explorer</div>
+          <div class="vs-file active"><span class="vs-file-icon">📄</span>experience.ts</div>
+          <div class="vs-file"><span class="vs-file-icon">📄</span>skills.ts</div>
+          <div class="vs-file"><span class="vs-file-icon">📄</span>projects.ts</div>
+          <div class="vs-file"><span class="vs-file-icon">📄</span>pubs.ts</div>
+          <div class="vs-section" style="margin-top:8px">Copilot</div>
+          <div class="vs-file"><span class="vs-file-icon">🤖</span>ask ram</div>
+        </div>
+        <div class="vs-chat">
+          <div class="vs-header">// Ram Copilot — resume.ts</div>
+          <div class="vs-bubble user">Current role?</div>
+          <div class="vs-bubble bot">AI/ML Lead @ ITC Infotech — building HR RAG + ServiceNow multi-agent systems</div>
+          <div class="vs-bubble user">Tech stack?</div>
+          <div class="vs-bubble bot">LangGraph · MCP · Docling · OpenSearch · LangSmith · DeepEval</div>
+          <div class="vs-input">
+            <span class="vs-input-text">Ask about resume...</span>
+            <span class="vs-cursor"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. NOTION -->
+  <div class="card">
+    <div class="card-label">
+      <span class="card-num">03</span>
+      <span class="card-title">Notion Clean Docs</span>
+      <span class="card-tag">Typography</span>
+    </div>
+    <div class="mockup">
+      <div class="notion">
+        <div class="notion-icon">👨‍💻</div>
+        <div class="notion-title">Ramanathan Murugappan</div>
+        <div class="notion-sub">AI/ML Lead · Ask me anything about my background</div>
+        <div class="notion-msg">
+          <div class="notion-label">You asked</div>
+          <div class="notion-text user-msg">What's your most impactful project?</div>
+        </div>
+        <div class="notion-msg">
+          <div class="notion-label">Ramanathan</div>
+          <div class="notion-text">The HR RAG system at ITC Infotech — 700+ documents, hybrid OpenSearch, Agentic RAG. It cut knowledge lookup time significantly for HR teams.</div>
+        </div>
+        <div class="notion-input">
+          <span>Ask a question...</span>
+          <span class="notion-send">↵</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 3D CARD -->
+  <div class="card">
+    <div class="card-label">
+      <span class="card-num">04</span>
+      <span class="card-title">3D Floating Card</span>
+      <span class="card-tag">react-three/fiber</span>
+    </div>
+    <div class="mockup">
+      <div class="three-d">
+        <div class="three-glow"></div>
+        <div class="card-3d">
+          <div class="card-front">
+            <div class="three-avatar">R</div>
+            <div class="three-name">Ramanathan Murugappan</div>
+            <div class="three-role">AI/ML Lead Research Engineer · ITC Infotech</div>
+            <div class="three-msg">Tell me about your GenAI experience.</div>
+            <div class="three-msg user">6+ yrs — RAG pipelines, multi-agent systems, MCP protocol, LLM eval with DeepEval & LangSmith. Currently at ITC Infotech R&D.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. MOBILE -->
+  <div class="card">
+    <div class="card-label">
+      <span class="card-num">05</span>
+      <span class="card-title">Mobile Chat (WhatsApp)</span>
+      <span class="card-tag">framer-motion</span>
+    </div>
+    <div class="mockup">
+      <div class="mobile-wrap">
+        <div class="phone">
+          <div class="phone-status">
+            <div class="phone-back">‹</div>
+            <div class="phone-avatar">R</div>
+            <div class="phone-name">Ramanathan Bot</div>
+            <div style="font-size:8px;color:rgba(255,255,255,0.6)">●</div>
+          </div>
+          <div class="phone-body">
+            <div class="wa-msg recv">Hi! Ask me about Ram's background 👋
+              <div class="wa-time">09:41 ✓✓</div>
+            </div>
+            <div class="wa-msg sent">What company does he work at?
+              <div class="wa-time">09:42 ✓✓</div>
+            </div>
+            <div class="wa-msg recv">ITC Infotech as AI/ML Lead (R&D), since Mar 2025. Building enterprise RAG + agentic systems.
+              <div class="wa-time">09:42 ✓✓</div>
+            </div>
+            <div class="wa-msg sent">Skills?
+              <div class="wa-time">09:43 ✓✓</div>
+            </div>
+          </div>
+          <div class="phone-input">
+            <div class="phone-inp">Message</div>
+            <div class="phone-mic">🎤</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. GLASSMORPHISM -->
+  <div class="card">
+    <div class="card-label">
+      <span class="card-num">06</span>
+      <span class="card-title">Glassmorphism</span>
+      <span class="card-tag">backdrop-blur</span>
+    </div>
+    <div class="mockup">
+      <div class="glass-bg">
+        <div class="glass-orb o1"></div>
+        <div class="glass-orb o2"></div>
+        <div class="glass-orb o3"></div>
+        <div class="glass-panel">
+          <div class="glass-header">
+            <div class="glass-avatar">R</div>
+            <div>
+              <div class="glass-name">Ramanathan Murugappan</div>
+              <div class="glass-status">● Online · Bengaluru</div>
+            </div>
+          </div>
+          <div class="glass-msg bot">Hey! I'm Ram's AI twin. What do you want to know about me?</div>
+          <div class="glass-msg user">Your biggest achievement?</div>
+          <div class="glass-msg bot">Won GrowthX Capstone — presented ₹500Cr revenue strategy for Blue Tokai to 1,000+ industry pros. They adopted 80% of our plan.</div>
+          <div class="glass-input">
+            <span>Ask anything...</span>
+            <div class="glass-send">→</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. TIMELINE -->
+  <div class="card">
+    <div class="card-label">
+      <span class="card-num">07</span>
+      <span class="card-title">Timeline + Chat</span>
+      <span class="card-tag">react-timeline</span>
+    </div>
+    <div class="mockup">
+      <div class="timeline-wrap">
+        <div class="timeline-side">
+          <div class="tl-item">
+            <div class="tl-dot active">▸</div>
+            <div class="tl-info">
+              <div class="tl-co">ITC Infotech</div>
+              <div class="tl-yr">2025–now</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot done">✓</div>
+            <div class="tl-info">
+              <div class="tl-co">Accenture</div>
+              <div class="tl-yr">2021–2025</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot done">✓</div>
+            <div class="tl-info">
+              <div class="tl-co">Kaleidofin</div>
+              <div class="tl-yr">2019–2021</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot done">✓</div>
+            <div class="tl-info">
+              <div class="tl-co">Anna Univ.</div>
+              <div class="tl-yr">2013–2020</div>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-chat">
+          <div class="tl-chat-title">Ask about any role ↑</div>
+          <div class="tl-msg bot">You selected <strong style="color:#e4ff47">ITC Infotech</strong>. What do you want to know?</div>
+          <div class="tl-msg user">What are you building there?</div>
+          <div class="tl-msg bot">HR RAG over 700+ docs + ServiceNow multi-agent automation using MCP + LangGraph.</div>
+          <div class="tl-input">
+            <span>Ask about this role...</span>
+            <span style="color:#e4ff47">↑</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. DARK DASHBOARD -->
+  <div class="card">
+    <div class="card-label">
+      <span class="card-num">08</span>
+      <span class="card-title">shadcn/ui Dashboard</span>
+      <span class="card-tag">shadcn · Tailwind</span>
+    </div>
+    <div class="mockup">
+      <div class="dash">
+        <div class="dash-top">
+          <div class="dash-card">
+            <div class="dash-card-label">Experience</div>
+            <div class="dash-card-val">6+</div>
+            <div class="dash-card-sub">years</div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-label">Role</div>
+            <div class="dash-card-val" style="font-size:11px;line-height:1.2">AI/ML Lead</div>
+            <div class="dash-card-sub">ITC Infotech</div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-label">Papers</div>
+            <div class="dash-card-val">2</div>
+            <div class="dash-card-sub">IEEE · FICC</div>
+          </div>
+        </div>
+        <div class="dash-badges">
+          <span class="badge green">RAG</span>
+          <span class="badge blue">LangGraph</span>
+          <span class="badge orange">MCP</span>
+          <span class="badge green">DeepEval</span>
+          <span class="badge blue">OpenSearch</span>
+        </div>
+        <div class="dash-chat">
+          <div class="dash-msg bot">What would you like to know about Ramanathan?</div>
+          <div class="dash-msg user">Tell me about the ServiceNow project</div>
+          <div class="dash-msg bot">Multi-agent system using a Master Orchestrator + MCP for dynamic routing — full ITSM automation end-to-end.</div>
+        </div>
+        <div class="dash-input">
+          <span>Ask anything...</span>
+          <div class="dash-send-btn">Send</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. VOICE UI -->
+  <div class="card">
+    <div class="card-label">
+      <span class="card-num">09</span>
+      <span class="card-title">Voice UI ⭐ Top Pick</span>
+      <span class="card-tag">Deepgram · VoiceRSS</span>
+    </div>
+    <div class="mockup">
+      <div class="voice-bg">
+        <div class="voice-rings">
+          <div class="voice-ring"></div>
+          <div class="voice-ring"></div>
+          <div class="voice-ring"></div>
+          <div class="voice-btn">🎤</div>
+        </div>
+        <div class="voice-wave">
+          <div class="voice-bar"></div>
+          <div class="voice-bar"></div>
+          <div class="voice-bar"></div>
+          <div class="voice-bar"></div>
+          <div class="voice-bar"></div>
+          <div class="voice-bar"></div>
+          <div class="voice-bar"></div>
+        </div>
+        <div class="voice-label">Listening...</div>
+        <div class="voice-transcript">"What's your current role at ITC Infotech?"</div>
+        <div class="voice-answer">AI is responding with audio — Deepgram STT + VoiceRSS TTS, already in your tech stack</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. PDF TOOLTIPS -->
+  <div class="card">
+    <div class="card-label">
+      <span class="card-num">10</span>
+      <span class="card-title">PDF Hover Tooltips ⭐</span>
+      <span class="card-tag">react-pdf · hover</span>
+    </div>
+    <div class="mockup">
+      <div class="pdf-wrap">
+        <div class="pdf-doc">
+          <div class="pdf-header">
+            <div>
+              <div class="pdf-name">Ramanathan Murugappan</div>
+              <div class="pdf-role">AI/ML Lead Research Engineer</div>
+            </div>
+          </div>
+          <div class="pdf-section">
+            <div class="pdf-sec-title">Experience</div>
+            <div class="pdf-text">
+              <span class="pdf-highlight">ITC Infotech
+                <div class="pdf-tooltip">
+                  <div class="pdf-tooltip-head">Ask Ram →</div>
+                  What are you building at ITC Infotech right now?
+                </div>
+              </span> · AI/ML Lead R&D<br>
+              <span class="pdf-highlight">HR RAG Application
+                <div class="pdf-tooltip">
+                  <div class="pdf-tooltip-head">Ask Ram →</div>
+                  How did you architect the HR RAG system with 700+ docs?
+                </div>
+              </span> with Docling,<br>
+              OpenSearch &amp;
+              <span class="pdf-highlight">Agentic RAG
+                <div class="pdf-tooltip">
+                  <div class="pdf-tooltip-head">Ask Ram →</div>
+                  What's the difference between standard RAG and Agentic RAG?
+                </div>
+              </span>
+            </div>
+          </div>
+          <div class="pdf-section">
+            <div class="pdf-sec-title">Skills</div>
+            <div class="pdf-text">LangChain · LangGraph · MCP · Qdrant · DeepEval · FastAPI · React</div>
+          </div>
+        </div>
+        <div class="pdf-chat-float">
+          <div class="pdf-chat-title">💬 AI Chat</div>
+          <div class="pdf-cmsg bot">Hover any term to auto-ask</div>
+          <div class="pdf-cmsg user">Tell me about Agentic RAG</div>
+          <div class="pdf-cmsg bot">RAG with planning + tool use — the agent decides what to retrieve dynamically.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── CTA ── -->
+<div class="cta">
+  <p>Pick a style — I'll build it as the full production interface</p>
+  <div class="cta-chips">
+    <button class="chip hot">Voice UI (#9)</button>
+    <button class="chip hot">PDF Tooltips (#10)</button>
+    <button class="chip">Terminal (#1)</button>
+    <button class="chip">VS Code (#2)</button>
+    <button class="chip">Dashboard (#8)</button>
+    <button class="chip">Glassmorphism (#6)</button>
+    <button class="chip">Timeline (#7)</button>
+    <button class="chip">3D Card (#4)</button>
+  </div>
+</div>
+
+</body>
+</html>
